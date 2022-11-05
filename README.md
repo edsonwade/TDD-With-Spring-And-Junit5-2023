@@ -1,4 +1,4 @@
-# TDD - (Test Driven Development) With Spring 5 and Junit 5 2022.
+# TDD With Spring 5 and Junit 5 2022.
 
 ### Module of the course is divid in three parts
 
@@ -9,12 +9,12 @@
         1.3 - testing a service that connects to a third-party API
         1.4 - Integration test  with Junit 5
 
-### Definition of TDD ( Test driven development)
+### Definition of TDD (Test driven development)
 
 A software development process that encourages developers to write tests
 for theis code before writing the code itself.
 
-### TDD process
+### TDD Process
 
      1 - Write Test
      2 - See Test Fail
