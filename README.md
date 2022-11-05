@@ -9,7 +9,7 @@
         1.3 - testing a service that connects to a third-party API
         1.4 - Integration test  with Junit 5
 
-### Definition of TDD ( Tets driven development)
+### Definition of TDD ( Test driven development)
 
 A software development process that encourages developers to write tests
 for theis code before writing the code itself.
@@ -22,7 +22,7 @@ for theis code before writing the code itself.
      4 - See Test Pass
      5 - Refactor
 
-### Starting the projects
+### project Overview
 
 1. Testing the Controller Layer
 2. Testing the Service Layer
