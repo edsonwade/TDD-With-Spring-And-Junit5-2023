@@ -16,7 +16,7 @@ for theis code before writing the code itself.
 
 ### TDD Process
 
-     1 - Write Test
+     1 - Write Test 
      2 - See Test Fail
      3 - Write Code
      4 - See Test Pass

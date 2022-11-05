@@ -1,0 +1,4 @@
+//    public Product findById(Integer id) {
+//        return productRepository.findById(id)
+//                .orElseThrow(() -> new ProductNotFoundException(" product with " + id + " not found"));
+//    }
