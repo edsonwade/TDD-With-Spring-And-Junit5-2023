@@ -28,4 +28,8 @@ public class ProductService {
     public boolean update(Product p) {
         return productRepository.existsById(p.getId());
     }
+
+    public boolean delete(Integer id) {
+        return id > 0;
+    }
 }

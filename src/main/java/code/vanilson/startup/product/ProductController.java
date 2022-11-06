@@ -75,7 +75,7 @@ public class ProductController {
         try {
             //Build created response
             return ResponseEntity
-                    .created(new URI("/product" + newProduct.getId()))
+                    .created(new URI("/product/" + newProduct.getId()))
                     .eTag(Integer.toString(newProduct.getVersion()))
                     .body(newProduct);
 
@@ -142,5 +142,19 @@ public class ProductController {
             }
 
         }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping(value = "/product/delete/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable(name = "id") Integer id) {
+        logger.info("Deleting product with ID{}", id);
+        //Get existing product
+        Optional<Product> existingProduct = productRepository.findById(id);
+
+        return existingProduct
+                .map(p -> {
+                    if (productService.delete(p.getId())) return ResponseEntity.ok().build();
+                    else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+
+                }).orElse(ResponseEntity.notFound().build());
     }
 }

@@ -1,0 +1,6 @@
+Error : Assertion error: No value for JSON Path in JUnit test. when where list all elements of entity
+
+Solution :  .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Bordeaux"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$[0].cost").value(10.55));
+
+Source : https://stackoverflow.com/questions/33659684/assertion-error-no-value-for-json-path-in-junit-test.

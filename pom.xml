@@ -111,6 +111,13 @@
             <artifactId>junit-jupiter</artifactId>
             <version>5.9.0</version>
         </dependency>
+        <!-- https://mavenlibs.com/maven/dependency/org.ojai/ojai -->
+        <dependency>
+            <groupId>org.ojai</groupId>
+            <artifactId>ojai</artifactId>
+            <version>3.1.1-mapr</version>
+        </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
