@@ -1,35 +1,48 @@
 package code.vanilson.startup.product;
 
-import org.springframework.stereotype.Service;
+import java.util.Optional;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
-@Service
-public class ProductService {
-
-    private final ProductRepository productRepository;
-
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+public interface ProductService {
 
 
-    public Iterable<Product> getAllProduct() {
-        return productRepository.findAll();
-    }
+    /**
+     * Returns all product's int the database
+     *
+     * @return All products int the database
+     */
+    Iterable<Product> findAllProducts();
 
-    @NotNull
-    @NotEmpty
-    public Product createNewProduct(Product product) {
-        return productRepository.save(product);
-    }
+    /**
+     * Returns the product with the specified id
+     *
+     * @param id ID of the preoduct to retrieve
+     * @return the requested Product if found
+     */
+    Optional<Product> getProductById(Integer id);
 
-    public boolean update(Product p) {
-        return productRepository.existsById(p.getId());
-    }
+    /**
+     * create a new product and save,  specified product to the database
+     *
+     * @param product The product to  save to the database.
+     * @return the saved pred product
+     */
+    Product createNewProduct(Product product);
 
-    public boolean delete(Integer id) {
-        return id > 0;
-    }
+    /**
+     * Updates the specified product , identified by its id.
+     *
+     * @param product The Product to update.
+     * @return True if the update succeeded , otherwise false.
+     */
+    Product updateProduct(Product product);
+
+    /**
+     * Deletes the product with the specified id.
+     *
+     * @param id The id of the product to delete
+     * @return true if the operation was successful.
+     */
+    boolean deleteProduct(Integer id);
 }
+
+

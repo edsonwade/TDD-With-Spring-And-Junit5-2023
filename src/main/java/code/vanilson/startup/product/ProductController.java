@@ -17,14 +17,12 @@ public class ProductController {
 
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
-    private final ProductService productService;
-    private final ProductRepository productRepository;
+    private final ProductServiceImpl productService;
 
-
-    public ProductController(ProductService productService, ProductRepository productRepository) {
+    public ProductController(ProductServiceImpl productService) {
         this.productService = productService;
-        this.productRepository = productRepository;
     }
+
 
     /**
      * returns all products in tne databases.
@@ -34,7 +32,7 @@ public class ProductController {
 
     @GetMapping(value = "/products")
     public ResponseEntity<Iterable<Product>> getProducts() {
-        return ResponseEntity.ok(productService.getAllProduct());
+        return ResponseEntity.ok(productService.findAllProducts());
     }
 
     /**
@@ -45,8 +43,8 @@ public class ProductController {
      */
     @GetMapping(value = " /product/{id}")
     public ResponseEntity<?> getProduct(@PathVariable(name = "id") Integer id) {
-        return productRepository
-                .findById(id)
+        return productService
+                .getProductById(id)
                 .map(product -> {
                     try {
                         return ResponseEntity
@@ -105,7 +103,7 @@ public class ProductController {
         logger.info("Creating new product with name:{},quatity:{} ,price:{}", product.getName(), product.getQuantity(), product.getPrice());
 
         // Get the existing product
-        Optional<Product> existingProduct = productRepository.findById(id);
+        Optional<Product> existingProduct = productService.getProductById(id);
 
         return existingProduct.map(p -> {
             //compare eTags
@@ -129,8 +127,9 @@ public class ProductController {
                     + " ,price n = " + p.getPrice());
 
             try {
+                var pr = productService.updateProduct(p);
                 //Update the product and return an ok response
-                if (productService.update(p)) {
+                if (pr != null) {
                     return ResponseEntity
                             .ok()
                             .eTag(Integer.toString(p.getVersion()))
@@ -145,14 +144,14 @@ public class ProductController {
     }
 
     @DeleteMapping(value = "/product/delete/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable(name = "id") Integer id) {
+    public ResponseEntity<Object> deleteProduct(@PathVariable(name = "id") Integer id) {
         logger.info("Deleting product with ID{}", id);
         //Get existing product
-        Optional<Product> existingProduct = productRepository.findById(id);
+        Optional<Product> existingProduct = productService.getProductById(id);
 
         return existingProduct
                 .map(p -> {
-                    if (productService.delete(p.getId())) return ResponseEntity.ok().build();
+                    if (productService.deleteProduct(p.getId())) return ResponseEntity.ok().build();
                     else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 
                 }).orElse(ResponseEntity.notFound().build());

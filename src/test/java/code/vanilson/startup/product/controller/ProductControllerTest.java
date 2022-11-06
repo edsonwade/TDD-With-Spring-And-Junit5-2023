@@ -1,8 +1,7 @@
 package code.vanilson.startup.product.controller;
 
 import code.vanilson.startup.product.Product;
-import code.vanilson.startup.product.ProductRepository;
-import code.vanilson.startup.product.ProductService;
+import code.vanilson.startup.product.ProductServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -17,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +24,6 @@ import java.util.Optional;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -32,9 +31,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class ProductControllerTest {
-    private final ProductRepository productRepository = mock(ProductRepository.class);
     @MockBean
-    private ProductService productService;
+    private ProductServiceImpl productService;
     @Autowired
     private MockMvc mockMvc;
 
@@ -44,7 +42,7 @@ class ProductControllerTest {
     void testGetProductByIdFound() throws Exception {
         //Setup our mocked service
         Product mockProduct = new Product(1, "Product Name", 10, 1, 200.00);
-        doReturn(Optional.of(mockProduct)).when(productRepository).findById(1);
+        doReturn(Optional.of(mockProduct)).when(productService).getProductById(1);
 
         //Execute the Get Request
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/product/{id}", 1))
@@ -55,7 +53,7 @@ class ProductControllerTest {
 
                 // validate the headers
                 .andExpect(header().string(HttpHeaders.ETAG, "\"1\""))
-                .andExpect(header().string(HttpHeaders.LOCATION, "/api/v1/Product/1"))
+                .andExpect(header().string(HttpHeaders.LOCATION, "/Product/1"))
 
                 //Validate the returned fields
                 .andExpect(jsonPath("$.id", is(1)))
@@ -69,7 +67,7 @@ class ProductControllerTest {
     @DisplayName("GET /product/1 - Not Found")
     void testGetProductByIdNotFound() throws Exception {
         //Setup our mocked service
-        doReturn(Optional.empty()).when(productRepository).findById(1);
+        doReturn(Optional.empty()).when(productService).getProductById(1);
 
         //Execute the Get Request
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/product/{id}", 1))
@@ -85,7 +83,7 @@ class ProductControllerTest {
         Iterable<Product> products = List.of(new Product(1, "Product Name", 10, 1, 200.00),
                 new Product(2, "Product Name 2", 20, 2, 300.00));
 
-        doReturn(products).when(productService).getAllProduct();
+        doReturn(products).when(productService).findAllProducts();
 
         //Execute the Get Request
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/products"))
@@ -142,8 +140,8 @@ class ProductControllerTest {
         // setup mock service
         Product putProduct = new Product("Product Name", 10, 200.00);
         Product mockProduct = new Product(1, "Product Name", 10, 1, 200.00);
-        doReturn(Optional.of(mockProduct)).when(productRepository).findById(1);
-        doReturn(true).when(productService).update(any());
+        doReturn(Optional.of(mockProduct)).when(productService).getProductById(1);
+        doReturn(true).when(productService).updateProduct(any());
 
         mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/product/update/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -171,8 +169,8 @@ class ProductControllerTest {
         // setup mock service
         Product putProduct = new Product("Product Name", 10, 200.00);
         Product mockProduct = new Product(1, "Product Name", 10, 1, 200.00);
-        doReturn(Optional.of(mockProduct)).when(productRepository).findById(1);
-        doReturn(true).when(productService).update(any());
+        doReturn(Optional.of(mockProduct)).when(productService).getProductById(1);
+        doReturn(true).when(productService).updateProduct(any());
 
         mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/product/update/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -190,7 +188,7 @@ class ProductControllerTest {
     void testUpdateProductNotFound() throws Exception {
         // setup mock service
         Product putProduct = new Product("Product Name", 10, 200.00);
-        doReturn(Optional.empty()).when(productRepository).findById(1);
+        doReturn(Optional.empty()).when(productService).getProductById(1);
 
 
         mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/product/update/{id}", 1)
@@ -206,10 +204,10 @@ class ProductControllerTest {
     @DisplayName("Delete /product/1 - Success ")
     void testDeleteProductSuccess() throws Exception {
         // setup mock  product
-        Product mockProduct = new Product("Product Name", 10, 200.00);
+        Product mockProduct = new Product(1, "Product Name", 10, 1, 200.00);
         // setup mock service
-        doReturn(Optional.of(mockProduct)).when(productRepository).findById(1);
-        doReturn(true).when(productService).delete(1);
+        doReturn(Optional.of(mockProduct)).when(productService).getProductById(1);
+        doReturn(true).when(productService).deleteProduct(1);
 
         //Execute our DELETE Request
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/product/delete/{id}", 1))
@@ -219,10 +217,11 @@ class ProductControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("Delete /product/1 - Not Found ")
     void testDeleteProductNotFound() throws Exception {
         // setup mock service
-        doReturn(Optional.empty()).when(productRepository).findById(1);
+        doReturn(Optional.empty()).when(productService).getProductById(1);
 
         //Execute our DELETE Request
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/product/delete/{id}", 1))
@@ -232,16 +231,17 @@ class ProductControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("Delete /product/1 - Failure ")
     void testDeleteProductFailure() throws Exception {
         // setup mock product
         Product mockProduct = new Product("Product Name", 10, 200.00);
         // setup mock service
-        doReturn(Optional.of(mockProduct)).when(productRepository).findById(1);
-        doReturn(false).when(productService).delete(1);
+        doReturn(Optional.of(mockProduct)).when(productService).getProductById(1);
+        doReturn(false).when(productService).deleteProduct(1);
 
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/product/update/{id}", 1))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/product/delete/{id}", 1))
 
 
                 // Validate the response code and content type

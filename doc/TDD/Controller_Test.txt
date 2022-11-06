@@ -148,3 +148,18 @@ class ProductControllerTest {
         }
     }
 }
+
+ @DeleteMapping(value = "/product/delete/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable(name = "id") Integer id) {
+        logger.info("Deleting product with ID{}", id);
+        //Get existing product
+        var product = productService.findProductById(id);
+        if (product.isPresent()) {
+            productService.deleteProduct(id);
+            return ResponseEntity.status(OK).body(" Product id Deelete with Success");
+        }
+        return ResponseEntity.status(NOT_FOUND).body(" Product with id " + id + " was not found");
+    }
+
+
+

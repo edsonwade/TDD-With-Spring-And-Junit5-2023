@@ -1,0 +1,6 @@
+ @Modifying   // to mark delete or update query
+    @Query("DELETE from Product p where p.id=:id")
+    boolean delete(@Param("id") Integer id);
+
+
+  // Use Transactional on method the test delete();
