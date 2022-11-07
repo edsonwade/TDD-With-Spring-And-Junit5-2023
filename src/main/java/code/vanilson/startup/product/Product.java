@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "tb_product")
+@Table(name = "products")
 @JsonPropertyOrder({"id", "name", "quantity", "price"})
 public class Product implements Serializable {
     private static final Long serialVersionUID = 1L;
