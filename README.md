@@ -4,7 +4,7 @@
 
 ### Introduction to TDD( Test Driven Developement)
 
-        1.1 - Teting A service With a SQL Backend
+        1.1 - Testing A service With a SQL Backend
         1.2 - Testing a service with mongodb backend
         1.3 - testing a service that connects to a third-party API
         1.4 - Integration test  with Junit 5
