@@ -112,11 +112,11 @@
             <version>5.9.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc11 -->
-        <dependency>
-            <groupId>com.oracle.database.jdbc</groupId>
-            <artifactId>ojdbc11</artifactId>
-            <version>23.2.0.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.oracle.database.jdbc</groupId>-->
+<!--            <artifactId>ojdbc11</artifactId>-->
+<!--            <version>23.2.0.0</version>-->
+<!--        </dependency>-->
         <!-- https://mvnrepository.com/artifact/org.easymock/easymock -->
         <dependency>
             <groupId>org.easymock</groupId>
@@ -124,13 +124,13 @@
             <version>5.1.0</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.powermock/powermock-api-easymock -->
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-easymock</artifactId>
-            <version>2.0.9</version>
-            <scope>test</scope>
-        </dependency>
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.powermock/powermock-api-easymock &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.powermock</groupId>-->
+<!--            <artifactId>powermock-api-easymock</artifactId>-->
+<!--            <version>2.0.9</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
 
 
 
