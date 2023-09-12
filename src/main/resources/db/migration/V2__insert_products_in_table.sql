@@ -1,0 +1,10 @@
+insert into tb_products (product_id, name, quantity, version) values (1, 'Plate - Foam, Bread And Butter', 284, 39);
+insert into tb_products (product_id, name, quantity, version) values (2, 'Juice - Tomato, 10 Oz', 240, 100);
+insert into tb_products (product_id, name, quantity, version) values (3, 'Grapefruit - Pink', 160, 77);
+insert into tb_products (product_id, name, quantity, version) values (4, 'Chicken - Wings, Tip Off', 245, 29);
+insert into tb_products (product_id, name, quantity, version) values (5, 'Fenngreek Seed', 368, 70);
+insert into tb_products (product_id, name, quantity, version) values (6, 'Carrots - Mini Red Organic', 437, 33);
+insert into tb_products (product_id, name, quantity, version) values (7, 'Rice - Sushi', 431, 63);
+insert into tb_products (product_id, name, quantity, version) values (8, 'Beef - Top Butt Aaa', 283, 71);
+insert into tb_products (product_id, name, quantity, version) values (9, 'Foil - 4oz Custard Cup', 683, 76);
+insert into tb_products (product_id, name, quantity, version) values (10, 'Brownies - Two Bite, Chocolate', 592, 9);
