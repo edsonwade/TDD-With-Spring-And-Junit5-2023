@@ -1,5 +1,6 @@
 package code.vanilson.startup.service;
 
+import code.vanilson.startup.exception.ObjectNotFoundById;
 import code.vanilson.startup.model.Product;
 import code.vanilson.startup.repository.ProductRepository;
 import org.apache.logging.log4j.LogManager;
@@ -21,15 +22,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> findById(Integer id) {
-        logger.info("Find product with id: {}", id);
-        return productRepository.findById(id);
-    }
-
-    @Override
     public List<Product> findAll() {
         logger.info("Find all products");
         return productRepository.findAll();
+    }
+
+    @Override
+    public Optional<Product> findById(Integer id) {
+        logger.info("Find product with id: {}", id);
+        return Optional.ofNullable(productRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundById(" product with id " + " not found")));
     }
 
     @Override

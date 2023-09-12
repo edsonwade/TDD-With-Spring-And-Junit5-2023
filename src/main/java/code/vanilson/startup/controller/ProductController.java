@@ -17,7 +17,7 @@ import java.util.Optional;
 public class ProductController {
 
     private static final Logger logger = LogManager.getLogger(ProductController.class);
-    public static final String PRODUCT = "/product/";
+    public static final String PRODUCT = "/products/";
 
     private final ProductServiceImpl productService;
 
@@ -26,10 +26,20 @@ public class ProductController {
     }
 
     /**
+     * Returns all products in the database.
+     *
+     * @return All products in the database.
+     */
+    @GetMapping
+    public ResponseEntity<Iterable<Product>> getProducts() {
+        return ResponseEntity.ok().body(productService.findAll());
+    }
+
+    /**
      * Returns the product with the specified ID.
      *
-     * @param id    The ID of the product to retrieve.
-     * @return      The product with the specified ID.
+     * @param id The ID of the product to retrieve.
+     * @return The product with the specified ID.
      */
     @GetMapping("/{id}")
     public ResponseEntity<?> getProduct(@PathVariable Integer id) {
@@ -42,7 +52,7 @@ public class ProductController {
                                 .eTag(Integer.toString(product.getVersion()))
                                 .location(new URI(PRODUCT + product.getProductId()))
                                 .body(product);
-                    } catch (URISyntaxException e ) {
+                    } catch (URISyntaxException e) {
                         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
                     }
                 })
@@ -50,21 +60,12 @@ public class ProductController {
     }
 
     /**
-     * Returns all products in the database.
-     *
-     * @return  All products in the database.
-     */
-    @GetMapping
-    public Iterable<Product> getProducts() {
-        return productService.findAll();
-    }
-
-    /**
      * Creates a new product.
-     * @param product   The product to create.
-     * @return          The created product.
+     *
+     * @param product The product to create.
+     * @return The created product.
      */
-    @PostMapping("/product")
+    @PostMapping("/create")
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
         logger.info("Creating new product with name: {}, quantity: {}", product.getName(), product.getQuantity());
 
@@ -84,15 +85,16 @@ public class ProductController {
 
     /**
      * Updates the fields in the specified product with the specified ID.
-     * @param product   The product field values to update.
-     * @param id        The ID of the product to update.
-     * @param ifMatch   The eTag version of the product.
-     * @return          A ResponseEntity that contains the updated product or one of the following error statuses:
-     *                  NOT_FOUND if there is no product in the database with the specified ID
-     *                  CONFLICT if the eTag does not match the version of the product to update
-     *                  INTERNAL_SERVICE_ERROR if there is a problem creating the location URI
+     *
+     * @param product The product field values to update.
+     * @param id      The ID of the product to update.
+     * @param ifMatch The eTag version of the product.
+     * @return A ResponseEntity that contains the updated product or one of the following error statuses:
+     * NOT_FOUND if there is no product in the database with the specified ID
+     * CONFLICT if the eTag does not match the version of the product to update
+     * INTERNAL_SERVICE_ERROR if there is a problem creating the location URI
      */
-    @PutMapping("/product/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<?> updateProduct(@RequestBody Product product,
                                            @PathVariable Integer id,
                                            @RequestHeader("If-Match") Integer ifMatch) {
@@ -104,7 +106,7 @@ public class ProductController {
 
         return existingProduct.map(p -> {
             // Compare the etags
-            logger.info("Product with ID:{} " , id + " has a version of " + p.getVersion()
+            logger.info("Product with ID:{} ", id + " has a version of " + p.getVersion()
                     + ". Update is for If-Match: " + ifMatch);
             if (!p.getVersion().equals(ifMatch)) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -115,7 +117,7 @@ public class ProductController {
             p.setQuantity(product.getQuantity());
             p.setVersion(p.getVersion() + 1);
 
-            logger.info("Updating product with ID:{} " , p.getProductId()
+            logger.info("Updating product with ID:{} ", p.getProductId()
                     + " -> name=" + p.getName()
                     + ", quantity=" + p.getQuantity()
                     + ", version=" + p.getVersion());
@@ -140,13 +142,14 @@ public class ProductController {
 
     /**
      * Deletes the product with the specified ID.
-     * @param id    The ID of the product to delete.
-     * @return      A ResponseEntity with one of the following status codes:
-     *              200 OK if the delete was successful
-     *              404 Not Found if a product with the specified ID is not found
-     *              500 Internal Service Error if an error occurs during deletion
+     *
+     * @param id The ID of the product to delete.
+     * @return A ResponseEntity with one of the following status codes:
+     * 200 OK if the delete was successful
+     * 404 Not Found if a product with the specified ID is not found
+     * 500 Internal Service Error if an error occurs during deletion
      */
-    @DeleteMapping("/product/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable Integer id) {
 
         logger.info("Deleting product with ID {}", id);
