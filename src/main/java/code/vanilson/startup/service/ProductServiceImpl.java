@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
     public Optional<Product> findById(Integer id) {
         logger.info("Find product with id: {}", id);
         return Optional.ofNullable(productRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundById(" product with id " + " not found")));
+                .orElseThrow(() -> new ObjectNotFoundById(" product with " + id + " not found")));
     }
 
     @Override
@@ -41,16 +42,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product save(Product product) {
+    public Product save(@NotNull Product product) {
         // Set the product version to 1 as we're adding a new product to the database
         product.setVersion(1);
-
         logger.info("Save product to the database: {}", product);
         return productRepository.save(product);
     }
 
     @Override
     public boolean delete(Integer id) {
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isEmpty()) {
+            throw new ObjectNotFoundById(" product with " + id + " not found");
+        }
         logger.info("Delete product with id: {}", id);
         return productRepository.delete(id);
     }
