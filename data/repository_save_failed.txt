@@ -21,3 +21,31 @@
 
 
     https://app.pluralsight.com/course-player?clipId=0ea5ccad-c772-404a-9513-b7898d110682 course TDD
+
+    Integration failed also
+
+     @Test
+        @DisplayName("POST /products/create - Success")
+        @DataSet("products.yml")
+        void testCreateProduct() throws Exception {
+            // Setup product to create
+            Product postProduct = new Product("Product Name", 10);
+
+            mockMvc.perform(post("/api/products/create")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(asJsonString(postProduct)))
+
+                    // Validate the response code and content type
+                    .andExpect(status().isCreated())
+                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+
+                    // Validate the headers
+                    .andExpect(header().string(HttpHeaders.ETAG, "\"1\""))
+                    .andExpect(header().exists(HttpHeaders.LOCATION))
+
+                    // Validate the returned fields
+                    .andExpect(jsonPath("$.id", any(Integer.class)))
+                    .andExpect(jsonPath("$.name", is("Product Name")))
+                    .andExpect(jsonPath("$.quantity", is(10)))
+                    .andExpect(jsonPath("$.version", is(1)));
+        }

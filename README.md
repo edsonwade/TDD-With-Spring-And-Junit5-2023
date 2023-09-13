@@ -1,13 +1,10 @@
 # TDD With Spring 5 and Junit 5 2023.
 
-### Module of the course is divid in three parts
-
-### Introduction to TDD( Test Driven Developement)
+### Introduction to TDD( Test Driven Development)
 
         1.1 - Testing A service With a SQL Backend
-        1.2 - Testing a service with mongodb backend
-        1.3 - testing a service that connects to a third-party API
-        1.4 - Integration test  with Junit 5
+        1.2 - testing a service that connects to a third-party API
+        1.3 - Integration test  with Junit 5
 
 ### Definition of TDD (Test driven development)
 
