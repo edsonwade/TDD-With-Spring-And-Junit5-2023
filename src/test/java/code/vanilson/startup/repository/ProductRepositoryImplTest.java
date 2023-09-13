@@ -1,7 +1,6 @@
 package code.vanilson.startup.repository;
 
 import code.vanilson.startup.model.Product;
-import com.github.database.rider.core.api.connection.ConnectionHolder;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.junit5.DBUnitExtension;
 import org.junit.jupiter.api.Assertions;
@@ -12,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,15 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @ActiveProfiles("test")
 class ProductRepositoryImplTest {
-    @Autowired
-    private DataSource dataSource;
+
     @Autowired
     private ProductRepository repository;
 
 
-    public ConnectionHolder getConnectionHolder() {
-        return () -> dataSource.getConnection();
-    }
 
     @Test
     @DataSet("products.yml")
