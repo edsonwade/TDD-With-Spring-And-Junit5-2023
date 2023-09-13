@@ -1,4 +1,4 @@
-name: Java CI 2022
+name: Java CI 2023
 
 on:
   pull_request:
