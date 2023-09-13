@@ -60,7 +60,7 @@ class ProductRepositoryImplTest {
     @DataSet("products.yml")
     void testFindByIdNotFound() {
         // Find the product with ID 2
-        Optional<Product> product = repository.findById(3);
+        Optional<Product> product = repository.findById(4);
 
         // Validate that we found it
         Assertions.assertFalse(product.isPresent(), "Product with ID 4 should be not be found");
