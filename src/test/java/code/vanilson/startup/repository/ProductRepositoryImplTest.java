@@ -40,14 +40,14 @@ class ProductRepositoryImplTest {
         Optional<Product> product = repository.findById(2);
 
         // Validate that we found it
-        Assertions.assertTrue(product.isPresent(), "Product with ID 2 should be found");
+        Assertions.assertTrue(product.isPresent(), "code.vanilson.startup.product.ProductSteps with ID 2 should be found");
 
         // Validate the product values
         Product p = product.get();
-        assertEquals(2, p.getProductId().intValue(), "Product ID should be 2");
-        assertEquals("Keyboard", p.getName(), "Product name should be \"Product 2\"");
-        assertEquals(5, p.getQuantity().intValue(), "Product quantity should be 5");
-        assertEquals(2, p.getVersion().intValue(), "Product version should be 2");
+        assertEquals(2, p.getProductId().intValue(), "code.vanilson.startup.product.ProductSteps ID should be 2");
+        assertEquals("Keyboard", p.getName(), "code.vanilson.startup.product.ProductSteps name should be \"code.vanilson.startup.product.ProductSteps 2\"");
+        assertEquals(5, p.getQuantity().intValue(), "code.vanilson.startup.product.ProductSteps quantity should be 5");
+        assertEquals(2, p.getVersion().intValue(), "code.vanilson.startup.product.ProductSteps version should be 2");
     }
 
     @Test
@@ -57,7 +57,7 @@ class ProductRepositoryImplTest {
         Optional<Product> product = repository.findById(4);
 
         // Validate that we found it
-        Assertions.assertFalse(product.isPresent(), "Product with ID 4 should be not be found");
+        Assertions.assertFalse(product.isPresent(), "code.vanilson.startup.product.ProductSteps with ID 4 should be not be found");
     }
 
     @Test
@@ -97,7 +97,7 @@ class ProductRepositoryImplTest {
 
         // Validate that the product has been deleted
         Optional<Product> product = repository.findById(1);
-        Assertions.assertFalse(product.isPresent(), "Product with ID 1 should have been deleted");
+        Assertions.assertFalse(product.isPresent(), "code.vanilson.startup.product.ProductSteps with ID 1 should have been deleted");
     }
 
     @Test
