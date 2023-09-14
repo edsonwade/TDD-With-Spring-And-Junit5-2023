@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 class ProductServiceImplTest {
 
     /**
-     * Product Repository Mock
+     * code.vanilson.startup.product.ProductSteps Repository Mock
      */
     ProductRepository productRepositoryMock;
     /**
@@ -24,7 +24,7 @@ class ProductServiceImplTest {
      */
     ProductServiceImpl currentInstance;
     /**
-     * Product instance
+     * code.vanilson.startup.product.ProductSteps instance
      */
     Product product;
     /**
@@ -63,7 +63,7 @@ class ProductServiceImplTest {
     void testShouldReturnTheProductsWhenTheGivenIdIsFound() {
         when(productRepositoryMock.findById(1)).thenReturn(Optional.of(product));
         assertSame(currentInstance.findById(1).get(), product, "Products should be the same");
-        assertTrue(currentInstance.findById(1).isPresent(), "Product was  found");
+        assertTrue(currentInstance.findById(1).isPresent(), "code.vanilson.startup.product.ProductSteps was  found");
         assertFalse(currentInstance.findById(1).isEmpty());
         assertNotEquals(234, currentInstance.findById(1)
                 .get()

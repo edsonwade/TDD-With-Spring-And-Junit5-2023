@@ -104,7 +104,7 @@ class ProductServiceIntegrationTest {
     @DataSet("products.yml")
     void testProductPutVersionMismatch() throws Exception {
         // Setup product to update
-        Product putProduct = new Product("Product Name", 10);
+        Product putProduct = new Product("code.vanilson.startup.product.ProductSteps Name", 10);
 
         mockMvc.perform(put("/api/products/update/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -120,7 +120,7 @@ class ProductServiceIntegrationTest {
     @DataSet("products.yml")
     void testProductPutNotFound() throws Exception {
         // Setup product to update
-        Product putProduct = new Product("Product Name", 10);
+        Product putProduct = new Product("code.vanilson.startup.product.ProductSteps Name", 10);
 
         mockMvc.perform(put("/api/products/update/{id}", 99)
                         .contentType(MediaType.APPLICATION_JSON)
