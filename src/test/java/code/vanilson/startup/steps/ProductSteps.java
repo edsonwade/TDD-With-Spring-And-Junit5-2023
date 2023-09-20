@@ -1,18 +1,12 @@
-package code.vanilson.startup.functionaltest;
+package code.vanilson.startup.steps;
 
-import code.vanilson.startup.StartupApplication;
 import code.vanilson.startup.model.Product;
-import io.cucumber.java.AfterAll;
-import io.cucumber.java.BeforeAll;
 import io.cucumber.java.DataTableType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.spring.CucumberContextConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
@@ -22,26 +16,9 @@ import java.util.Objects;
 
 import static org.junit.Assert.*;
 
-@CucumberContextConfiguration
-@ContextConfiguration(classes = {FunctionalTestConfiguration.class})
-@SpringBootTest(classes = StartupApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class ProductSteps {
     private ResponseEntity<Product[]> response;
     RestTemplate restTemplate = new RestTemplate();
-
-
-    @BeforeAll
-    public static void cenas() {
-        System.out.println("Before All Scenarios - Executed before all scenarios in the feature");
-
-    }
-
-    @AfterAll
-    public static void afterAll() {
-        System.out.println("After All Scenarios - Executed after all scenarios in the feature");
-
-    }
-
 
     @Given("the product service is available")
     public void theProductServiceIsAvailable() {
