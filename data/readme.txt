@@ -24,3 +24,6 @@ for theis code before writing the code itself.
 1. Testing the Controller Layer
 2. Testing the Service Layer
 3. Testing the Repository Layer
+
+
+- ![Docker Pulls](https://img.shields.io/docker/pulls/:user/:repo)
