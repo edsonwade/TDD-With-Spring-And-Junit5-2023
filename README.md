@@ -20,18 +20,40 @@ MarketplaceAPI is a Spring Boot-based e-commerce backend application that allows
 
 - [Installation](#installation)
 - [Prerequisites](#prerequisites)
+- [Configuration](#configurations)
+- [Running the Application](#running the application)
 - [Database Setup](#database-setup)
 - [API Endpoints](#api-endpoints)
+- [API Documentation](#api-documentation)
+- [Technologies](#technologies)
 - [Contributing](#contributing)
 - [License](#license)
 
 ### Prerequisites
 
-Before running [Your Application Name], ensure you have the following prerequisites installed on your system:
+Before running MarketplaceAPI, ensure you have the following prerequisites installed on your system:
 
 - [Java](https://www.oracle.com/java/technologies/javase-downloads.html)
 - [Maven](https://maven.apache.org/download.cgi) (for building the application)
-- [Database Server](e.g., H2, MySQL,PostgreSQL) - Configured and running
+- Database Server (H2, MySQL,PostgresSQL) - Configured and running
+### Configurations
+
+1. Clone the repository:
+
+   ```
+   git clone https://github.com/edsonwade/MarketplaceAPI.git
+   ```
+2. Navigate to the project directory:
+   ````
+   cd MarketplaceAPI
+   ````
+3. Open the application.properties file and configure the database connection properties. Replace your-database-url, your-database-username, and your-database-password with your database details:
+   ````
+   spring.datasource.url=jdbc:mysql://your-database-url:3306/your-database
+   spring.datasource.username={your-database-username}
+   spring.datasource.password={your-database-password}
+   ````
+4. Save the changes to the application.properties file.
 
 ## Database Setup
 MarketplaceAPI  uses Flyway Migration for database  within the Spring Boot application. 
@@ -44,6 +66,18 @@ Follow the steps below to configure and set up the database for your e-commerce 
 2. **Apply Migrations**
 
    The Spring Boot application will automatically apply Flyway migrations on startup. Simply start your application, and Flyway will handle database schema creation and updates.
+
+## Running the Application
+Use the following steps to MarketplaceAPI
+1. Build the application:
+    ````
+    mvn clean install
+    ````
+2. Run the application:
+  ````
+  java -jar target/your-application-name.jar
+  ````
+The application will start, and you can access it at `http://localhost:8080`.
 
 
 ## API Endpoints
@@ -71,5 +105,28 @@ Follow the steps below to configure and set up the database for your e-commerce 
     - [PUT] Update an order item
     - [DELETE] Delete an order item
 
+## API Documentation
+MarketplaceAPI  exposes a RESTful API for managing e-commerce data. You can find detailed API documentation and explore available endpoints using Swagger UI.
+To access Swagger UI, go to:
+
+``` 
+http://localhost:8080/swagger-ui.html
+```
+## Technologies
+MarketplaceAPI leverages various technologies to provide a robust e-commerce solution:
+
+Docker: Containerization for easy deployment and scalability.
+
+Grafana and Prometheus: Monitoring and metrics gathering for performance analysis.
+
+Mockito: A popular Java testing framework for unit testing and mocking.
+
+CI/CD: Continuous Integration and Continuous Deployment pipelines to streamline development and deployment.
+
+Spring Security: Secure your application with authentication and authorization features.
+
 ## Contributing
 - [Vanilson Muhongo](https://www.github.com/edsonwade)
+
+## License
+MarketplaceAPI is licensed under the [MIT License.](https://choosealicense.com/licenses/mit)
