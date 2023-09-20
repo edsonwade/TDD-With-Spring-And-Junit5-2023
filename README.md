@@ -21,7 +21,7 @@ MarketplaceAPI is a Spring Boot-based e-commerce backend application that allows
 - [Installation](#installation)
 - [Prerequisites](#prerequisites)
 - [Configuration](#configurations)
-- [Running the Application](#running the application)
+- [Running the Application](#running-the-application)
 - [Database Setup](#database-setup)
 - [API Endpoints](#api-endpoints)
 - [API Documentation](#api-documentation)
