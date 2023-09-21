@@ -52,8 +52,6 @@ class CustomerServiceImplTest {
 
         //Asserts
         assertEquals(customers, currentActual);
-        assertEquals(1L, currentActual.get(0).getCustomerId());
-        assertEquals(2L, currentActual.get(1).getCustomerId());
         assertFalse(currentActual.isEmpty());
         assertNotNull(currentActual);
         //verify

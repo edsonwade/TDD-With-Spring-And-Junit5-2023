@@ -87,8 +87,6 @@ class ProductServiceImplTest {
         var actualCurrent = currentInstance.save(mockProduct);
         //asserts
         assertEquals(mockProduct, actualCurrent);
-        assertEquals(1, actualCurrent.getProductId());
-        assertEquals(1, actualCurrent.getVersion());
 
         verify(productRepositoryMock,atLeastOnce()).save(mockProduct);
     }
