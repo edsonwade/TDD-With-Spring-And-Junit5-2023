@@ -22,6 +22,9 @@ target/
 /data
 /src/main/resources/db
 /src/main/resources/application.properties
+/src/test/java/code/vanilson/startup/integration
+/src/test/java/code/vanilson/startup/repository
+/src/test/java/code/vanilson/startup/config
 
 ### NetBeans ###
 /nbproject/private/

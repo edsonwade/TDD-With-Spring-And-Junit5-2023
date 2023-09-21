@@ -56,36 +56,32 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public Customer updateCustomer(long id, Customer customer) {
-        // Check if the 'customer' object is null
         if (Objects.isNull(customer)) {
             logger.error(THE_CUSTOMER_OBJECT_MUST_NOT_BE_NULL);
             throw new IllegalRequestException(THE_CUSTOMER_OBJECT_MUST_NOT_BE_NULL);
         }
-        // Check if a customer with the given 'id' exists
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
         if (optionalCustomer.isEmpty()) {
             logger.error("Customer with id {} not found.", id);
             throw new ObjectWithIdNotFound("Customer with id " + id + " not found.");
         }
-        // Get the existing customer from the database
-        Customer existingCustomer = optionalCustomer.get();
 
-        // Validate input properties
+        var existingCustomer = optionalCustomer.get();
+
+
         if (customer.getName() == null || customer.getEmail() == null || customer.getAddress() == null) {
             logger.error("Updating to null values for 'name', 'email', or 'address' is not allowed.");
             throw new IllegalRequestException("Updating to null values for 'name', 'email', or 'address' is not allowed.");
         }
-        // Update the fields of the existing customer with the values from the input 'customer'
+
         existingCustomer.setName(customer.getName());
         existingCustomer.setEmail(customer.getEmail());
         existingCustomer.setAddress(customer.getAddress());
 
-        // Save the updated customer and return it
         Customer updatedCustomer = customerRepository.save(existingCustomer);
         logger.info("Customer updated with success: {}", updatedCustomer);
         return updatedCustomer;
     }
-
 
 
     @Override
