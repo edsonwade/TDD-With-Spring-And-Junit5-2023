@@ -1,6 +1,6 @@
 package code.vanilson.startup.service;
 
-import code.vanilson.startup.exception.ObjectNotFoundById;
+import code.vanilson.startup.exception.ObjectWithIdNotFound;
 import code.vanilson.startup.model.Product;
 import code.vanilson.startup.repository.ProductRepository;
 import org.apache.logging.log4j.LogManager;
@@ -32,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
     public Optional<Product> findById(Integer id) {
         logger.info("Find product with id: {}", id);
         return Optional.ofNullable(productRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundById(" product with " + id + " not found")));
+                .orElseThrow(() -> new ObjectWithIdNotFound(" product with " + id + " not found")));
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
     public boolean delete(Integer id) {
         Optional<Product> product = productRepository.findById(id);
         if (product.isEmpty()) {
-            throw new ObjectNotFoundById(" product with " + id + " not found");
+            throw new ObjectWithIdNotFound(" product with " + id + " not found");
         }
         logger.info("Delete product with id: {}", id);
         return productRepository.delete(id);

@@ -1,7 +1,8 @@
 package code.vanilson.startup.exception.handler;
 
+import code.vanilson.startup.exception.IllegalRequestException;
 import code.vanilson.startup.exception.ObjectExceptionResponse;
-import code.vanilson.startup.exception.ObjectNotFoundById;
+import code.vanilson.startup.exception.ObjectWithIdNotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,9 +18,8 @@ import java.time.ZonedDateTime;
 @ControllerAdvice
 public class ObjectEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-
-    @ExceptionHandler(value = ObjectNotFoundById.class)
-    public final ResponseEntity<ObjectExceptionResponse> handleBadRequest(
+    @ExceptionHandler(value = ObjectWithIdNotFound.class)
+    public final ResponseEntity<ObjectExceptionResponse> handleNotFoundRequest(
             Exception e, WebRequest webRequest) {
         ObjectExceptionResponse objectExceptionResponse = new ObjectExceptionResponse(
                 e.getMessage(),
@@ -29,8 +29,14 @@ public class ObjectEntityExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(objectExceptionResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(value = IllegalRequestException.class)
+    public final ResponseEntity<ObjectExceptionResponse> handleBadRequest(
+            Exception e, WebRequest webRequest) {
+        ObjectExceptionResponse objectExceptionResponse = new ObjectExceptionResponse(
+                e.getMessage(),
+                ZonedDateTime.now(ZoneId.of("Z")),
+                webRequest.getDescription(false));
 
-
-
-
+        return new ResponseEntity<>(objectExceptionResponse, HttpStatus.BAD_REQUEST);
+    }
 }
