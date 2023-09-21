@@ -1,6 +1,6 @@
 package code.vanilson.startup.service;
 
-import code.vanilson.startup.exception.ObjectNotFoundById;
+import code.vanilson.startup.exception.ObjectWithIdNotFound;
 import code.vanilson.startup.model.Product;
 import code.vanilson.startup.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,7 +76,7 @@ class ProductServiceImplTest {
     void testShouldThrowExceptionsWhenTheGivenIdIsNotFound() {
         when(productRepositoryMock.findById(1)).thenReturn(Optional.empty());
         //assert
-        assertThrows(ObjectNotFoundById.class, () -> currentInstance.findById(1));
+        assertThrows(ObjectWithIdNotFound.class, () -> currentInstance.findById(1));
     }
 
     @Test

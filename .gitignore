@@ -20,6 +20,8 @@ target/
 *.iml
 *.ipr
 /data
+/src/main/resources/db
+/src/main/resources/application.properties
 
 ### NetBeans ###
 /nbproject/private/

@@ -1,28 +1,33 @@
 package code.vanilson.startup.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tb_customers")
 @Getter
 @Setter
-@JsonPropertyOrder({"customerId","name","email","address"})
+@JsonPropertyOrder({"customerId", "name", "email", "address"})
 public class Customer implements Serializable {
     private static final long serialVersionUID = 123578L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "customer_id",nullable = false)
+    @Column(name = "customer_id", nullable = false)
     private Long customerId;
     private String name;
     @Column(unique = true, length = 45)
     private String email;
     private String address;
+    @JsonIgnore
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Order> orders;
 
     public Customer() {
         //default constructor
@@ -35,6 +40,14 @@ public class Customer implements Serializable {
         this.address = address;
     }
 
+    public Customer(Long customerId, String name, String email, String address, List<Order> orders) {
+        this.customerId = customerId;
+        this.name = name;
+        this.email = email;
+        this.address = address;
+        this.orders = orders;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -45,7 +58,8 @@ public class Customer implements Serializable {
         if (!Objects.equals(customerId, customer.customerId)) return false;
         if (!Objects.equals(name, customer.name)) return false;
         if (!Objects.equals(email, customer.email)) return false;
-        return Objects.equals(address, customer.address);
+        if (!Objects.equals(address, customer.address)) return false;
+        return Objects.equals(orders, customer.orders);
     }
 
     @Override
@@ -54,6 +68,7 @@ public class Customer implements Serializable {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (orders != null ? orders.hashCode() : 0);
         return result;
     }
 
@@ -66,4 +81,5 @@ public class Customer implements Serializable {
                 ", address='" + address + '\'' +
                 '}';
     }
+
 }
