@@ -1,6 +1,6 @@
 package code.vanilson.startup.controller;
 
-import code.vanilson.startup.model.Product;
+import code.vanilson.startup.dto.ProductDto;
 import code.vanilson.startup.service.ProductServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,9 +16,8 @@ import java.util.Optional;
 @RequestMapping("/api/products")
 public class ProductController {
 
-    private static final Logger logger = LogManager.getLogger(ProductController.class);
     public static final String PRODUCT = "/products/";
-
+    private static final Logger logger = LogManager.getLogger(ProductController.class);
     private final ProductServiceImpl productService;
 
     public ProductController(ProductServiceImpl productService) {
@@ -31,7 +30,7 @@ public class ProductController {
      * @return All products in the database.
      */
     @GetMapping
-    public ResponseEntity<Iterable<Product>> getProducts() {
+    public ResponseEntity<Iterable<ProductDto>> getProducts() {
         return ResponseEntity.ok().body(productService.findAll());
     }
 
@@ -43,7 +42,6 @@ public class ProductController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<?> getProduct(@PathVariable Integer id) {
-
         return productService.findById(id)
                 .map(product -> {
                     try {
@@ -66,11 +64,11 @@ public class ProductController {
      * @return The created product.
      */
     @PostMapping("/create")
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto product) {
         logger.info("Creating new product with name: {}, quantity: {}", product.getName(), product.getQuantity());
 
-        // Create the new product
-        Product newProduct = productService.save(product);
+        // Create a new product
+        ProductDto newProduct = productService.save(product);
 
         try {
             // Build a created response
@@ -95,17 +93,17 @@ public class ProductController {
      * INTERNAL_SERVICE_ERROR if there is a problem creating the location URI
      */
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateProduct(@RequestBody Product product,
+    public ResponseEntity<?> updateProduct(@RequestBody ProductDto product,
                                            @PathVariable Integer id,
                                            @RequestHeader("If-Match") Integer ifMatch) {
         logger.info("Updating product with id: {}, name: {}, quantity: {}",
                 id, product.getName(), product.getQuantity());
 
         // Get the existing product
-        Optional<Product> existingProduct = productService.findById(id);
+        Optional<ProductDto> existingProduct = productService.findById(id);
 
         return existingProduct.map(p -> {
-            // Compare the etags
+            // Compare the tags
             logger.info("Product with ID:{} ", id + " has a version of " + p.getVersion()
                     + ". Update is for If-Match: " + ifMatch);
             if (!p.getVersion().equals(ifMatch)) {
@@ -145,7 +143,7 @@ public class ProductController {
      *
      * @param id The ID of the product to delete.
      * @return A ResponseEntity with one of the following status codes:
-     * 200 OK if the delete was successful
+     * 200 OK if the deleting was successful
      * 404 Not Found if a product with the specified ID is not found
      * 500 Internal Service Error if an error occurs during deletion
      */
@@ -155,7 +153,7 @@ public class ProductController {
         logger.info("Deleting product with ID {}", id);
 
         // Get the existing product
-        Optional<Product> existingProduct = productService.findById(id);
+        Optional<ProductDto> existingProduct = productService.findById(id);
 
         return existingProduct.map(p -> {
             if (productService.delete(p.getProductId())) {

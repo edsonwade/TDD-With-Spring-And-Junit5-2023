@@ -1,6 +1,6 @@
 package code.vanilson.startup.controller;
 
-import code.vanilson.startup.model.Product;
+import code.vanilson.startup.dto.ProductDto;
 import code.vanilson.startup.service.ProductServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +20,6 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
 @WebMvcTest(ProductController.class)
 class ProductControllerTest {
 
@@ -29,13 +28,12 @@ class ProductControllerTest {
     @MockBean
     ProductServiceImpl productServiceMock;
 
-    Product product;
+    ProductDto product;
 
     @BeforeEach
     void setUp() {
-        product = new Product(1, "Computer", 34, 2004);
+        product = new ProductDto(1, "Computer", 34, 2004);
     }
-
 
     @Test
     @DisplayName("GET /api/products -Success")
@@ -44,15 +42,15 @@ class ProductControllerTest {
         when(productServiceMock.findAll())
                 .thenReturn(
                         List.of(
-                                new Product(1, "Computer", 34, 2004),
-                                new Product(2, "Mouse", 10, 1)
+                                new ProductDto(1, "Computer", 34, 2004),
+                                new ProductDto(2, "Mouse", 10, 1)
                         )
                 );
         mockMvc.perform(get("/api/products"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(2))
-                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].productId").value(1))
                 .andExpect(jsonPath("$[0].name").value("Computer"))
                 .andExpect(jsonPath("$[0].quantity").value(34))
                 .andExpect(jsonPath("$[0].version").value(2004));
@@ -72,7 +70,7 @@ class ProductControllerTest {
                 .andExpect(header().string(HttpHeaders.ETAG, "\"2004\""))
                 .andExpect(header().string(HttpHeaders.LOCATION, "/products/1"))
                 .andExpect(jsonPath("$.size()").value(4))
-                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.productId").value(1))
                 .andExpect(jsonPath("$.name").value("Computer"))
                 .andExpect(jsonPath("$.quantity").value(34))
                 .andExpect(jsonPath("$.version").value(2004));
@@ -94,9 +92,8 @@ class ProductControllerTest {
     @Test
     @DisplayName("POST /api/products/create - Success")
     void testPostCreateNewProduct() throws Exception {
-        Product postProduct = new Product("keyboard", 10);
-        Product mockProduct = new Product(1, "keyboard", 10, 1);
-
+        ProductDto postProduct = new ProductDto("keyboard", 10);
+        ProductDto mockProduct = new ProductDto(1, "keyboard", 10, 1);
 
         when(productServiceMock.save(any())).thenReturn(mockProduct);
         mockMvc.perform(post("/api/products/create")
@@ -109,7 +106,7 @@ class ProductControllerTest {
                 .andExpect(header().string(HttpHeaders.LOCATION, "/products/1"))
                 // return fields
                 .andExpect(jsonPath("$.size()").value(4))
-                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.productId").value(1))
                 .andExpect(jsonPath("$.name").value("keyboard"))
                 .andExpect(jsonPath("$.quantity").value(10))
                 .andExpect(jsonPath("$.version").value(1));
@@ -118,12 +115,11 @@ class ProductControllerTest {
 
     }
 
-
     @Test
     @DisplayName("PUT /api/products/update/{id} - Success")
     void testPuttUpdateProductSuccess() throws Exception {
-        Product putProduct = new Product("keyboard", 10);
-        Product mockProduct = new Product(1, "keyboard", 10, 1);
+        ProductDto putProduct = new ProductDto("keyboard", 10);
+        ProductDto mockProduct = new ProductDto(1, "keyboard", 10, 1);
 
         when(productServiceMock.findById(1)).thenReturn(Optional.of(mockProduct));
         when(productServiceMock.update(any())).thenReturn(true);
@@ -140,7 +136,7 @@ class ProductControllerTest {
                 .andExpect(header().string(HttpHeaders.LOCATION, "/products/1"))
                 // return fields
                 .andExpect(jsonPath("$.size()").value(4))
-                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.productId").value(1))
                 .andExpect(jsonPath("$.name").value("keyboard"))
                 .andExpect(jsonPath("$.quantity").value(10))
                 .andExpect(jsonPath("$.version").value(2));
@@ -164,8 +160,8 @@ class ProductControllerTest {
     @DisplayName("PUT /api/products/update/{id} -Not Found")
     void testProductPutVersionMisMatch() throws Exception {
 
-        Product putProduct = new Product("keyboard", 10);
-        Product mockProduct = new Product(1, "keyboard", 10, 2);
+        ProductDto putProduct = new ProductDto("keyboard", 10);
+        ProductDto mockProduct = new ProductDto(1, "keyboard", 10, 2);
 
         when(productServiceMock.findById(1)).thenReturn(Optional.of(mockProduct));
         when(productServiceMock.update(any())).thenReturn(false);
@@ -199,7 +195,6 @@ class ProductControllerTest {
         mockMvc.perform(delete("/api/products/delete/{id}", 1))
                 .andExpect(status().isNotFound());
 
-
     }
 
     @Test
@@ -210,9 +205,7 @@ class ProductControllerTest {
         mockMvc.perform(delete("/api/products/delete/{id}", 1))
                 .andExpect(status().isInternalServerError());
 
-
     }
-
 
     /**
      * Method auxiliary to convert object in json
