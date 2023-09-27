@@ -1,5 +1,6 @@
 package code.vanilson.startup.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,14 +13,15 @@ import java.util.Objects;
 @Table(name = "tb_orderItems")
 @Getter
 @Setter
-@JsonPropertyOrder({"orderItemId", "order", "product","quantity"})
+@JsonPropertyOrder({"orderItemId", "order", "product", "quantity"})
 public class OrderItem implements Serializable {
     private static final long serialVersionUID = 54667873578L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_item_id", nullable = false)
     private Long orderItemId;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference
     private Order order;
     @ManyToOne
     private Product product;
@@ -40,6 +42,10 @@ public class OrderItem implements Serializable {
         this.order = order;
         this.product = product;
         this.quantity = quantity;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     @Override

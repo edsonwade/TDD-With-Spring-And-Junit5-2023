@@ -1,6 +1,8 @@
 package code.vanilson.startup.service;
 
+import code.vanilson.startup.dto.ProductDto;
 import code.vanilson.startup.exception.ObjectWithIdNotFound;
+import code.vanilson.startup.mapper.ProductMapper;
 import code.vanilson.startup.model.Product;
 import code.vanilson.startup.repository.ProductRepository;
 import org.apache.logging.log4j.LogManager;
@@ -10,6 +12,9 @@ import org.springframework.stereotype.Service;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
+
+import static code.vanilson.startup.mapper.ProductMapper.toProduct;
+import static code.vanilson.startup.mapper.ProductMapper.toProductDtoList;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -23,39 +28,46 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findAll() {
-        logger.info("Find all products");
-        return productRepository.findAll();
+    public List<ProductDto> findAll() {
+        List<Product> products = productRepository.findAll();
+        return toProductDtoList(products);
+
     }
 
     @Override
-    public Optional<Product> findById(Integer id) {
-        logger.info("Find product with id: {}", id);
-        return Optional.ofNullable(productRepository.findById(id)
+    public Optional<ProductDto> findById(Integer id) {
+        Optional<Product> product = Optional.ofNullable(productRepository.findById(id)
                 .orElseThrow(() -> new ObjectWithIdNotFound(" product with " + id + " not found")));
+        logger.info("Find product with id: {}", id);
+        return toProduct(product);
     }
 
     @Override
-    public boolean update(Product product) {
-        logger.info("Update product: {}", product);
-        return productRepository.update(product);
-    }
-
-    @Override
-    public Product save(@NotNull Product product) {
-        // Set the product version to 1 as we're adding a new product to the database
+    public ProductDto save(@NotNull ProductDto productDto) {
+        // Convert ProductDto to Product
+        Product product = ProductMapper.toProduct(productDto);
         product.setVersion(1);
-        logger.info("Save product to the database: {}", product);
-        return productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
+        logger.info("Saved product to the database: {}", savedProduct);
+        return ProductMapper.toProductDto(savedProduct);
+    }
+
+    @Override
+    public boolean update(ProductDto productDto) {
+        Product product = ProductMapper.toProduct(productDto);
+        logger.info("Update product: {}", productDto);
+        return productRepository.update(product);
     }
 
     @Override
     public boolean delete(Integer id) {
         Optional<Product> product = productRepository.findById(id);
-        if (product.isEmpty()) {
+        var productDto = toProduct(product);
+        if (productDto.isEmpty()) {
             throw new ObjectWithIdNotFound(" product with " + id + " not found");
         }
         logger.info("Delete product with id: {}", id);
         return productRepository.delete(id);
     }
+
 }

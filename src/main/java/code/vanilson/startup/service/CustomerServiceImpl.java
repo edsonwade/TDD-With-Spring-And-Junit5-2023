@@ -16,10 +16,9 @@ import java.util.Optional;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    private static final Logger logger = LogManager.getLogger(CustomerServiceImpl.class);
     public static final String NOT_FOUND = " not found";
     public static final String THE_CUSTOMER_OBJECT_MUST_NOT_BE_NULL = "The 'customer' object must not be null.";
-
+    private static final Logger logger = LogManager.getLogger(CustomerServiceImpl.class);
     private final CustomerRepository customerRepository;
 
     public CustomerServiceImpl(CustomerRepository customerRepository) {
@@ -68,10 +67,10 @@ public class CustomerServiceImpl implements CustomerService {
 
         var existingCustomer = optionalCustomer.get();
 
-
         if (customer.getName() == null || customer.getEmail() == null || customer.getAddress() == null) {
             logger.error("Updating to null values for 'name', 'email', or 'address' is not allowed.");
-            throw new IllegalRequestException("Updating to null values for 'name', 'email', or 'address' is not allowed.");
+            throw new IllegalRequestException(
+                    "Updating to null values for 'name', 'email', or 'address' is not allowed.");
         }
 
         existingCustomer.setName(customer.getName());
@@ -82,7 +81,6 @@ public class CustomerServiceImpl implements CustomerService {
         logger.info("Customer updated with success: {}", updatedCustomer);
         return updatedCustomer;
     }
-
 
     @Override
     @Transactional

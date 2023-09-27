@@ -18,8 +18,8 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public class ProductRepositoryImpl implements ProductRepository{
-    private static final Logger logger =  LogManager.getLogger(ProductRepositoryImpl.class);
+public class ProductRepositoryImpl implements ProductRepository {
+    private static final Logger logger = LogManager.getLogger(ProductRepositoryImpl.class);
 
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert simpleJdbcInsert;
@@ -29,8 +29,8 @@ public class ProductRepositoryImpl implements ProductRepository{
 
         // Build a SimpleJdbcInsert object from the specified data source
         this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
-                .withTableName("products")
-                .usingGeneratedKeyColumns("id");
+                .withTableName("tb_products")
+                .usingGeneratedKeyColumns("product_id");
     }
 
     @Override

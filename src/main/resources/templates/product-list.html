@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Product List</title>
+    <!-- Add Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Add custom CSS -->
+    <style>
+        body {
+            background-color: #F1F1F1;
+        }
+
+        /* Style the delete button */
+        .btn-danger {
+            background-color: #FF0073;
+            color: #FFFFFF;
+        }
+
+        /* Set text color for table headers */
+        th {
+            color: #000000; /* Change this color to your desired text color */
+        }
+
+        /* Set initial text color for table rows */
+        td {
+            color: #000000; /* Change this color to your desired text color */
+        }
+
+        /* Hover effect to change text color on table rows */
+        tbody tr:hover td {
+            color: #FFFFFF; /* Change this color to the desired hover text color */
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            /* Apply styles for screens up to 768px wide (tablets and below) */
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-5">Product List</h1>
+    <a class="btn btn-primary mt-3 mb-3" th:href="@{/products/create}">Create New Product</a>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Version</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.productId}"></td>
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.quantity}"></td>
+            <td th:text="${product.version}"></td>
+            <td>
+                <a class="btn btn-info btn-sm" th:href="@{/products/edit/{id}(id=${product.productId})}">Edit</a>
+                <a class="btn btn-danger btn-sm" th:href="@{/products/delete/{id}(id=${product.productId})}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Add Bootstrap JS (optional) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
