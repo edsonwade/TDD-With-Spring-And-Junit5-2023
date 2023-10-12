@@ -29,6 +29,7 @@ public class CustomerServiceImpl implements CustomerService {
     public List<Customer> findAllCustomers() {
         logger.info(" All customers");
         return customerRepository.findAll();
+        
     }
 
     @Override

@@ -10,11 +10,11 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
-@Table(name = "tb_order")
+@Table(name = "tb_orders")
 @Getter
 @Setter
 @JsonPropertyOrder({"orderId", "customer", "localDateTime", "orderItems"})
@@ -25,23 +25,18 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id", nullable = false)
     private Long orderId;
+    @Column(name = "order_date")
     private LocalDateTime localDateTime;
-    //    @JsonIgnore
+    //@JsonIgnore
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
     @JsonManagedReference
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<OrderItem> orderItems;
-
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<OrderItem> orderItems;
 
     public Order() {
         //default constructor
-    }
-
-    public void addOrderItem(OrderItem orderItem) {
-        orderItems.add(orderItem);
-        orderItem.setOrder(this); // Set the back reference to the Order
     }
 
     public Order(Long orderId, LocalDateTime localDateTime) {
@@ -49,24 +44,28 @@ public class Order implements Serializable {
         this.localDateTime = localDateTime;
     }
 
-    public Order(Long orderId, LocalDateTime localDateTime, Customer customer, List<OrderItem> orderItems) {
+    public Order(Long orderId, LocalDateTime localDateTime, Customer customer, Set<OrderItem> orderItems) {
         this.orderId = orderId;
         this.localDateTime = localDateTime;
         this.customer = customer;
         this.orderItems = orderItems;
     }
 
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setOrder(this); // Set the back reference to the Order
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {return true;}
+        if (o == null || getClass() != o.getClass()) {return false;}
 
         Order order = (Order) o;
 
-        if (!Objects.equals(orderId, order.orderId)) return false;
-        if (!Objects.equals(localDateTime, order.localDateTime))
-            return false;
-        if (!Objects.equals(customer, order.customer)) return false;
+        if (!Objects.equals(orderId, order.orderId)) {return false;}
+        if (!Objects.equals(localDateTime, order.localDateTime)) {return false;}
+        if (!Objects.equals(customer, order.customer)) {return false;}
         return Objects.equals(orderItems, order.orderItems);
     }
 
@@ -78,6 +77,5 @@ public class Order implements Serializable {
         result = 31 * result + (orderItems != null ? orderItems.hashCode() : 0);
         return result;
     }
-
 
 }

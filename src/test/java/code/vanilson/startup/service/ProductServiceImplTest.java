@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 class ProductServiceImplTest {
 
     /**
-     * code.vanilson.startup.product.ProductSteps Repository Mock
+     * Product Repository Mock
      */
     ProductRepository productRepositoryMock;
     /**
@@ -25,7 +25,7 @@ class ProductServiceImplTest {
      */
     ProductServiceImpl currentInstance;
     /**
-     * code.vanilson.startup.product.ProductSteps instance
+     * Product
      */
     Product product;
     /**

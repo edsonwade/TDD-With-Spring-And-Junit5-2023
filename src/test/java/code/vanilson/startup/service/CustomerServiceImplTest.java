@@ -17,6 +17,10 @@ import static org.mockito.Mockito.*;
 class CustomerServiceImplTest {
 
     /**
+     * List of Customers
+     */
+    public List<Customer> customers;
+    /**
      * Mock CustomerRepository
      */
     CustomerRepository customerRepositoryMock;
@@ -28,10 +32,6 @@ class CustomerServiceImplTest {
      * Object Customer
      */
     Customer customer;
-    /**
-     * List of Customers
-     */
-    public List<Customer> customers;
 
     @BeforeEach
     void setUp() {
@@ -83,7 +83,6 @@ class CustomerServiceImplTest {
         verify(customerRepositoryMock).findById(1L);
     }
 
-
     @Test
     @DisplayName("create a new Customer - Success")
     void testCreateNewCustomerSuccess() {
@@ -112,7 +111,6 @@ class CustomerServiceImplTest {
         when(customerRepositoryMock.findById(1L)).thenReturn(Optional.of(existingCustomer));
 
         when(customerRepositoryMock.save(existingCustomer)).thenReturn(updatedCustomer);
-
 
         Customer result = currentInstance.updateCustomer(1L, updatedCustomer);
 
@@ -147,19 +145,22 @@ class CustomerServiceImplTest {
     @Test
     @DisplayName("Delete Customer - Success")
     void testDeleteCustomerWithSuccess() {
-        when(customerRepositoryMock.findById(1L)).thenReturn(Optional.of(customer));
+        when(customerRepositoryMock.findById(1L))
+                .thenReturn(Optional.of(customer));
         var current = currentInstance.deleteCustomer(1);
         assertTrue(current);
-        verify(customerRepositoryMock, times(1)).delete(customer);
+        verify(customerRepositoryMock, times(1))
+                .delete(customer);
     }
 
     @Test
     @DisplayName(" Delete Customer - Not Found")
     void testDeleteCustomerNotFound() {
-        when(customerRepositoryMock.findById(1L)).thenReturn(Optional.empty());
-        assertThrows(ObjectWithIdNotFound.class, () -> currentInstance.deleteCustomer(1L));
+        when(customerRepositoryMock.findById(1L))
+                .thenReturn(Optional.empty());
+        assertThrows(ObjectWithIdNotFound.class,
+                () -> currentInstance.deleteCustomer(1L));
         verify(customerRepositoryMock).findById(1L);
     }
-
 
 }

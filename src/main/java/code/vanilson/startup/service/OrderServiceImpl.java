@@ -15,19 +15,20 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
     public static final String NOT_FOUND = " not found";
     public static final String THE_ORDER_OBJECT_MUST_NOT_BE_NULL = "The 'order' object must not be null.";
-
+    private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final CustomerRepository customerRepository;
 
-    public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository, CustomerRepository customerRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository,
+                            CustomerRepository customerRepository) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
         this.customerRepository = customerRepository;
@@ -75,9 +76,11 @@ public class OrderServiceImpl implements OrderService {
 
         var existingOrder = optionalOrder.get();
 
-        if (updatedOrder.getLocalDateTime() == null || updatedOrder.getCustomer() == null || updatedOrder.getOrderItems() == null) {
+        if (updatedOrder.getLocalDateTime() == null || updatedOrder.getCustomer() == null ||
+                updatedOrder.getOrderItems() == null) {
             logger.error("Updating to null values for 'localDateTime', 'customer', or 'orderItems' is not allowed.");
-            throw new IllegalRequestException("Updating to null values for 'localDateTime', 'customer', or 'orderItems' is not allowed.");
+            throw new IllegalRequestException(
+                    "Updating to null values for 'localDateTime', 'customer', or 'orderItems' is not allowed.");
         }
 
         // Update existing Order properties
@@ -88,7 +91,7 @@ public class OrderServiceImpl implements OrderService {
         existingOrder.getOrderItems().clear();
 
         // Update existing OrderItems
-        List<OrderItem> updatedOrderItems = updatedOrder.getOrderItems();
+        Set<OrderItem> updatedOrderItems = updatedOrder.getOrderItems();
         for (OrderItem updatedItem : updatedOrderItems) {
             // Set the back reference to the existing Order
             updatedItem.setOrder(existingOrder);

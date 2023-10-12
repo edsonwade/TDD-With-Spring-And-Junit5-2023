@@ -25,8 +25,8 @@ public class Customer implements Serializable {
     @Column(unique = true, length = 45)
     private String email;
     private String address;
+    @OneToMany(mappedBy = "customer")
     @JsonIgnore
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Order> orders;
 
     public Customer() {
@@ -50,15 +50,15 @@ public class Customer implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {return true;}
+        if (o == null || getClass() != o.getClass()) {return false;}
 
         Customer customer = (Customer) o;
 
-        if (!Objects.equals(customerId, customer.customerId)) return false;
-        if (!Objects.equals(name, customer.name)) return false;
-        if (!Objects.equals(email, customer.email)) return false;
-        if (!Objects.equals(address, customer.address)) return false;
+        if (!Objects.equals(customerId, customer.customerId)) {return false;}
+        if (!Objects.equals(name, customer.name)) {return false;}
+        if (!Objects.equals(email, customer.email)) {return false;}
+        if (!Objects.equals(address, customer.address)) {return false;}
         return Objects.equals(orders, customer.orders);
     }
 
@@ -74,12 +74,8 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return "Customer{" +
-                "customerId=" + customerId +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                '}';
+        return "Customer{" + "customerId=" + customerId + ", name='" + name + '\'' + ", email='" + email + '\'' +
+                ", address='" + address + '\'' + '}';
     }
 
 }
