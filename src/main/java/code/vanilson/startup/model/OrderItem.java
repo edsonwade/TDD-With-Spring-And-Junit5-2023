@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,10 +21,13 @@ public class OrderItem implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_item_id", nullable = false)
     private Long orderItemId;
-    @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference
-    private Order order;
     @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     private int quantity;
@@ -49,25 +53,23 @@ public class OrderItem implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+    public final boolean equals(Object o) {
+        if (this == o) {return true;}
+        if (o == null) {return false;}
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ?
+                ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ?
+                ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() :
+                this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) {return false;}
         OrderItem orderItem = (OrderItem) o;
-
-        if (quantity != orderItem.quantity) return false;
-        if (!Objects.equals(orderItemId, orderItem.orderItemId))
-            return false;
-        if (!Objects.equals(order, orderItem.order)) return false;
-        return Objects.equals(product, orderItem.product);
+        return getOrderItemId() != null && Objects.equals(getOrderItemId(), orderItem.getOrderItemId());
     }
 
     @Override
-    public int hashCode() {
-        int result = orderItemId != null ? orderItemId.hashCode() : 0;
-        result = 31 * result + (order != null ? order.hashCode() : 0);
-        result = 31 * result + (product != null ? product.hashCode() : 0);
-        result = 31 * result + quantity;
-        return result;
+    public final int hashCode() {
+        return this instanceof HibernateProxy ?
+                ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() :
+                getClass().hashCode();
     }
 }

@@ -21,5 +21,6 @@ public class CustomerDto implements Serializable {
     String email;
     @NotNull
     String address;
+
     List<OrderDto> orders;
 }
