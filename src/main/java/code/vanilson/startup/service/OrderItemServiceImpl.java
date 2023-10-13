@@ -4,7 +4,6 @@ import code.vanilson.startup.exception.IllegalRequestException;
 import code.vanilson.startup.exception.ObjectWithIdNotFound;
 import code.vanilson.startup.model.OrderItem;
 import code.vanilson.startup.repository.OrderItemRepository;
-import code.vanilson.startup.repository.ProductRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -20,12 +19,9 @@ public class OrderItemServiceImpl implements OrderItemService {
     public static final String NOT_FOUND = " not found";
     public static final String THE_ORDER_ITEM_OBJECT_MUST_NOT_BE_NULL = "The 'orderItem' object must not be null.";
     private static final Logger logger = LogManager.getLogger(OrderItemServiceImpl.class);
-
-    private final ProductRepository productRepository;
     private final OrderItemRepository orderItemRepository;
 
-    public OrderItemServiceImpl(ProductRepository productRepository, OrderItemRepository orderItemRepository) {
-        this.productRepository = productRepository;
+    public OrderItemServiceImpl(OrderItemRepository orderItemRepository) {
         this.orderItemRepository = orderItemRepository;
     }
 
