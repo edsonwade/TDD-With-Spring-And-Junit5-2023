@@ -10,19 +10,19 @@ public interface CustomerService {
      * Returns the customer with the specified id.
      *
      * @param id ID of the customer to retrieve.
-     * @return The requested Product if found.
+     * @return The requested Customer if found.
      */
     Optional<Customer> findCustomerById(Long id);
 
     /**
-     * Returns all products in the database.
+     * Returns all Customers in the database.
      *
-     * @return All products in the database.
+     * @return All Customers in the database.
      */
     List<Customer> findAllCustomers();
 
     /**
-     * Updates the specified product, identified by its id.
+     * Updates the specifiedCustomer, identified by its id.
      *
      * @param customer The customer to update.
      * @return True if the update succeeded, otherwise false.
@@ -33,7 +33,7 @@ public interface CustomerService {
      * Saves the specified customer to the database.
      *
      * @param customer The customer to save to the database.
-     * @return The saved product.
+     * @return The savedCustomer.
      */
     Customer saveCustomer(Customer customer);
 
