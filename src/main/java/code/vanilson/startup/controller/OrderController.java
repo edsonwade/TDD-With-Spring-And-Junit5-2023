@@ -17,10 +17,9 @@ import java.util.Optional;
 @RequestMapping("/api/orders")
 public class OrderController {
 
+    public static final String ORDER = "/orders/";
     private static final Logger logger = LogManager.getLogger(OrderController.class);
     private final OrderServiceImpl orderService;
-
-    public static final String ORDER = "/orders/";
 
     public OrderController(OrderServiceImpl orderService) {
         this.orderService = orderService;
@@ -32,7 +31,7 @@ public class OrderController {
      * @return All orders in the database.
      */
     @GetMapping
-    public ResponseEntity<Iterable<Order>> getOrders() {
+    public ResponseEntity<Iterable<Order>> getAllOrders() {
         return ResponseEntity.ok().body(orderService.findAllOrders());
     }
 
@@ -43,7 +42,7 @@ public class OrderController {
      * @return The order with the specified ID.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Order>> getOrder(@PathVariable Long id) {
+    public ResponseEntity<Optional<Order>> getOrderById(@PathVariable Long id) {
         return ResponseEntity.ok()
                 .body(orderService.findOrderById(id));
     }
@@ -109,6 +108,5 @@ public class OrderController {
             }
         }).orElse(ResponseEntity.notFound().build());
     }
-
 
 }

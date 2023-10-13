@@ -1,6 +1,5 @@
 package code.vanilson.startup.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +20,6 @@ public class OrderItem implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_item_id", nullable = false)
     private Long orderItemId;
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
@@ -71,5 +69,15 @@ public class OrderItem implements Serializable {
         return this instanceof HibernateProxy ?
                 ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() :
                 getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "OrderItem{" +
+                "orderItemId=" + orderItemId +
+                ", order=" + order +
+                ", product=" + product +
+                ", quantity=" + quantity +
+                '}';
     }
 }
