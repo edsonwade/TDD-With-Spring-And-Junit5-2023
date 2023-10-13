@@ -78,4 +78,13 @@ public class Order implements Serializable {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Order{" +
+                "orderId=" + orderId +
+                ", localDateTime=" + localDateTime +
+                ", customer=" + customer +
+                ", orderItems=" + orderItems +
+                '}';
+    }
 }
