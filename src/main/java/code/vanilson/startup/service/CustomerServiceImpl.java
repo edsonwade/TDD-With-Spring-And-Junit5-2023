@@ -1,7 +1,9 @@
 package code.vanilson.startup.service;
 
+import code.vanilson.startup.dto.CustomerDto;
 import code.vanilson.startup.exception.IllegalRequestException;
 import code.vanilson.startup.exception.ObjectWithIdNotFound;
+import code.vanilson.startup.mapper.CustomerMapper;
 import code.vanilson.startup.model.Customer;
 import code.vanilson.startup.repository.CustomerRepository;
 import org.apache.logging.log4j.LogManager;
@@ -26,10 +28,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> findAllCustomers() {
+    public List<CustomerDto> findAllCustomers() {
+        List<Customer> customers = customerRepository.findAll();
         logger.info(" All customers");
-        return customerRepository.findAll();
-        
+        return CustomerMapper.toCustomerDtoList(customers);
+
     }
 
     @Override

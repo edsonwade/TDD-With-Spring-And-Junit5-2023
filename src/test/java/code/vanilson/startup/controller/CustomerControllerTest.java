@@ -30,7 +30,9 @@ class CustomerControllerTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+
+        MockitoAnnotations
+                .openMocks(this);
     }
 
     @Test
@@ -89,7 +91,8 @@ class CustomerControllerTest {
 
         mockMvc.perform(put("/api/customers/update/{id}", customerId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"Updated Name\",\"email\":\"updated@example.com\",\"address\":\"Updated Address\"}"))
+                        .content(
+                                "{\"name\":\"Updated Name\",\"email\":\"updated@example.com\",\"address\":\"Updated Address\"}"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
