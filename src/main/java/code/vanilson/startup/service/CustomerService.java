@@ -1,5 +1,6 @@
 package code.vanilson.startup.service;
 
+import code.vanilson.startup.dto.CustomerDto;
 import code.vanilson.startup.model.Customer;
 
 import java.util.List;
@@ -7,19 +8,19 @@ import java.util.Optional;
 
 public interface CustomerService {
     /**
+     * Returns all Customers in the database.
+     *
+     * @return All Customers in the database.
+     */
+    List<CustomerDto> findAllCustomers();
+
+    /**
      * Returns the customer with the specified id.
      *
      * @param id ID of the customer to retrieve.
      * @return The requested Customer if found.
      */
     Optional<Customer> findCustomerById(Long id);
-
-    /**
-     * Returns all Customers in the database.
-     *
-     * @return All Customers in the database.
-     */
-    List<Customer> findAllCustomers();
 
     /**
      * Updates the specifiedCustomer, identified by its id.

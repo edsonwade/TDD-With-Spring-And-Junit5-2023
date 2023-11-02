@@ -1,5 +1,6 @@
 package code.vanilson.startup.controller;
 
+import code.vanilson.startup.dto.CustomerDto;
 import code.vanilson.startup.model.Customer;
 import code.vanilson.startup.service.CustomerServiceImpl;
 import org.apache.logging.log4j.LogManager;
@@ -32,7 +33,7 @@ public class CustomerController {
      * @return All customers in the database.
      */
     @GetMapping
-    public ResponseEntity<Iterable<Customer>> getCustomers() {
+    public ResponseEntity<Iterable<CustomerDto>> getCustomers() {
         return ResponseEntity.ok().body(customerService.findAllCustomers());
     }
 
@@ -109,6 +110,5 @@ public class CustomerController {
             }
         }).orElse(ResponseEntity.notFound().build());
     }
-
 
 }

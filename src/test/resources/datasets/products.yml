@@ -11,3 +11,8 @@ tb_products:
     name: "Mobile"
     quantity: 5
     version: 2
+tb_order_items:
+  - order_item_id: 1
+    order_id: 1  # An order ID that matches an order with this product
+    product_id: 2  # The product being updated
+    quantity: 3

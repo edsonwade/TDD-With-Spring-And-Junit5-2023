@@ -65,21 +65,43 @@
             <version>5.2.0</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.dbunit</groupId>
-            <artifactId>dbunit</artifactId>
-            <version>2.5.4</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.dbunit</groupId>-->
+<!--            <artifactId>dbunit</artifactId>-->
+<!--            <version>2.5.4</version>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>com.github.database-rider</groupId>
             <artifactId>rider-core</artifactId>
-            <version>1.2.10</version>
+            <version>1.41.0</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.database-rider</groupId>
-            <artifactId>rider-junit5</artifactId>
-            <version>1.2.10</version>
+            <groupId>org.dbunit</groupId>
+            <artifactId>dbunit</artifactId>
+            <version>2.7.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-lgpl</artifactId>
+            <version>1.9.13</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.github.database-rider</groupId>-->
+<!--            <artifactId>rider-core</artifactId>-->
+<!--            <version>1.2.10</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.github.database-rider</groupId>-->
+<!--            <artifactId>rider-junit5</artifactId>-->
+<!--            <version>1.2.10</version>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>com.github.springtestdbunit</groupId>
             <artifactId>spring-test-dbunit</artifactId>
@@ -117,6 +139,14 @@
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.database-rider/rider-junit5 -->
+        <dependency>
+            <groupId>com.github.database-rider</groupId>
+            <artifactId>rider-junit5</artifactId>
+            <version>1.41.0</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

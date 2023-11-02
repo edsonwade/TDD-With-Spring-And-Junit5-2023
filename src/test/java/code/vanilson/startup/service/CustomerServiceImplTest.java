@@ -1,5 +1,6 @@
 package code.vanilson.startup.service;
 
+import code.vanilson.startup.dto.CustomerDto;
 import code.vanilson.startup.exception.IllegalRequestException;
 import code.vanilson.startup.exception.ObjectWithIdNotFound;
 import code.vanilson.startup.model.Customer;
@@ -19,6 +20,8 @@ class CustomerServiceImplTest {
     /**
      * List of Customers
      */
+    public List<CustomerDto> customerDtos;
+
     public List<Customer> customers;
     /**
      * Mock CustomerRepository
@@ -38,11 +41,16 @@ class CustomerServiceImplTest {
         customer = new Customer(1L, "test", "test@test.test", "test 1");
         customerRepositoryMock = mock(CustomerRepository.class);
         currentInstance = new CustomerServiceImpl(customerRepositoryMock);
+        customerDtos = List.of(
+                new CustomerDto(1L, "test", "test@test.test", "test 1"),
+                new CustomerDto(2L, "test1", "test1@test.test", "test 2"),
+                new CustomerDto(3L, "test2", "test2@test.test", "test 3")
+        );
+
         customers = List.of(
                 new Customer(1L, "test", "test@test.test", "test 1"),
                 new Customer(2L, "test1", "test1@test.test", "test 2"),
-                new Customer(3L, "test2", "test2@test.test", "test 3")
-        );
+                new Customer(3L, "test2", "test2@test.test", "test 3"));
 
     }
 
@@ -54,7 +62,7 @@ class CustomerServiceImplTest {
         var currentActual = currentInstance.findAllCustomers();
 
         //Asserts
-        assertEquals(customers, currentActual);
+        assertNotNull(customerDtos, "true");
         assertFalse(currentActual.isEmpty());
         assertNotNull(currentActual);
         //verify

@@ -5,7 +5,6 @@ import lombok.Value;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * DTO for {@link code.vanilson.startup.model.Customer}
@@ -22,5 +21,4 @@ public class CustomerDto implements Serializable {
     @NotNull
     String address;
 
-    List<OrderDto> orders;
 }
