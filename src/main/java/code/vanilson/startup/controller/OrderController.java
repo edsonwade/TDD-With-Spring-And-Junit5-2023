@@ -5,6 +5,7 @@ import code.vanilson.startup.service.OrderServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,14 +54,10 @@ public class OrderController {
      * @param order The order to create.
      * @return The created order.
      */
-    @PostMapping("/create")
+    @PostMapping(value = "/create")
     public ResponseEntity<Order> createOrder(@Valid @RequestBody Order order) {
-        logger.info("Creating new order with localDateTime: {}, customer: {}, orderItems: {}",
-                order.getLocalDateTime(),
-                order.getCustomer(),
-                order.getOrderItems());
 
-        // Create a new order
+       // Create a new order
         Order newOrder = orderService.saveOrder(order);
 
         try {

@@ -44,6 +44,12 @@ public class Order implements Serializable {
         this.localDateTime = localDateTime;
     }
 
+    public Order(Long orderId, Customer customer, Set<OrderItem> orderItems) {
+        this.orderId = orderId;
+        this.customer = customer;
+        this.orderItems = orderItems;
+    }
+
     public Order(Long orderId, LocalDateTime localDateTime, Customer customer, Set<OrderItem> orderItems) {
         this.orderId = orderId;
         this.localDateTime = localDateTime;

@@ -20,6 +20,9 @@ import java.util.Optional;
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {
     private static final Logger logger = LogManager.getLogger(ProductRepositoryImpl.class);
+    public static final String PRODUCT_ID = "product_id";
+    public static final String VERSION = "version";
+    public static final String QUANTITY = "quantity";
 
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert simpleJdbcInsert;
@@ -30,26 +33,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         // Build a SimpleJdbcInsert object from the specified data source
         this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
                 .withTableName("tb_products")
-                .usingGeneratedKeyColumns("product_id");
-    }
-
-    @Override
-    public Optional<Product> findById(Integer id) {
-        try {
-            Product product = jdbcTemplate.queryForObject("SELECT * FROM tb_products WHERE product_id = ?",
-                    new Object[]{id},
-                    (rs, rowNum) -> {
-                        Product p = new Product();
-                        p.setProductId(rs.getInt("product_id"));
-                        p.setName(rs.getString("name"));
-                        p.setQuantity(rs.getInt("quantity"));
-                        p.setVersion(rs.getInt("version"));
-                        return p;
-                    });
-            return Optional.of(product);
-        } catch (EmptyResultDataAccessException e) {
-            return Optional.empty();
-        }
+                .usingGeneratedKeyColumns(PRODUCT_ID);
     }
 
     @Override
@@ -59,13 +43,32 @@ public class ProductRepositoryImpl implements ProductRepository {
                     @Override
                     public Product mapRow(ResultSet rs, int rowNumber) throws SQLException {
                         Product product = new Product();
-                        product.setProductId(rs.getInt("product_id"));
+                        product.setProductId(rs.getInt(PRODUCT_ID));
                         product.setName(rs.getString("name"));
-                        product.setQuantity(rs.getInt("quantity"));
-                        product.setVersion(rs.getInt("version"));
+                        product.setQuantity(rs.getInt(QUANTITY));
+                        product.setVersion(rs.getInt(VERSION));
                         return product;
                     }
                 });
+    }
+
+    @Override
+    public Optional<Product> findById(Integer id) {
+        try {
+            Product product = jdbcTemplate.queryForObject("SELECT * FROM tb_products WHERE product_id = ?",
+                    new Object[]{id},
+                    (rs, rowNum) -> {
+                        Product p = new Product();
+                        p.setProductId(rs.getInt(PRODUCT_ID));
+                        p.setName(rs.getString("name"));
+                        p.setQuantity(rs.getInt(QUANTITY));
+                        p.setVersion(rs.getInt(VERSION));
+                        return p;
+                    });
+            return Optional.of(product);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -82,8 +85,8 @@ public class ProductRepositoryImpl implements ProductRepository {
         // Build the product parameters we want to save
         Map<String, Object> parameters = new HashMap<>(1);
         parameters.put("name", product.getName());
-        parameters.put("quantity", product.getQuantity());
-        parameters.put("version", product.getVersion());
+        parameters.put(QUANTITY, product.getQuantity());
+        parameters.put(VERSION, product.getVersion());
 
         // Execute the query and get the generated key
         Number newId = simpleJdbcInsert.executeAndReturnKey(parameters);
