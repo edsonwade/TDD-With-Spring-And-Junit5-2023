@@ -1,14 +1,10 @@
 package code.vanilson.startup.integration;
 
 import code.vanilson.startup.dto.ProductDto;
-import code.vanilson.startup.model.Product;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.database.rider.core.api.configuration.DBUnit;
 import com.github.database.rider.core.api.connection.ConnectionHolder;
 import com.github.database.rider.core.api.dataset.DataSet;
-
 import com.github.database.rider.junit5.DBUnitExtension;
-import com.github.database.rider.junit5.api.DBRider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
