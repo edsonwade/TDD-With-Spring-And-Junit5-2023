@@ -7,9 +7,8 @@ FROM maven:3.6-openjdk-11 as builder
 RUN mkdir -p /app
 WORKDIR /app
 ADD pom.xml .
-RUN mvn dependency:go-offline -B
 COPY ./src ./src
-RUN mvn package -DskipTests
+RUN mvn clean install
 
 
 FROM openjdk:11-jdk as runner
