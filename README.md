@@ -132,4 +132,4 @@ Spring Security: Secure your application with authentication and authorization f
 
 ## 📝 License
 MarketplaceAPI is licensed under the [MIT License.](https://choosealicense.com/licenses/mit)
-```
+
