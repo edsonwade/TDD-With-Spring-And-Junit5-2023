@@ -1,33 +1,33 @@
-# MarketplaceAPI 
+# 🛒 MarketplaceAPI 
 
 ## Description
 MarketplaceAPI is a Spring Boot-based e-commerce backend application that allows you to manage products, customers, orders, and order items.
 
-## Features
-- Product Management: Easily add, update, and remove products from your catalog with detailed information, including name, price, and more.
+## 🚀 Features
+- **Product Management**: Easily add, update, and remove products from your catalog with detailed information, including name, price, and more.
 
-- Customer Management: Manage customer data, including names, email addresses, and shipping addresses, to provide a personalized shopping experience.
+- **Customer Management**: Manage customer data, including names, email addresses, and shipping addresses, to provide a personalized shopping experience.
 
-- Order Processing: Efficiently process and track orders with support for order creation, modification, and order item management.
+- **Order Processing**: Efficiently process and track orders with support for order creation, modification, and order item management.
 
-- Database Integration: Seamlessly integrate with a relational database for data storage, retrieval, and management.
+- **Database Integration**: Seamlessly integrate with a relational database for data storage, retrieval, and management.
 
-- RESTful API: Expose a RESTful API to interact with your e-commerce platform programmatically, enabling easy integration with front-end applications.
+- **RESTful API**: Expose a RESTful API to interact with your e-commerce platform programmatically, enabling easy integration with front-end applications.
 
-- Sample Data: Get started quickly with preloaded sample data to showcase the system's capabilities.
+- **Sample Data**: Get started quickly with preloaded sample data to showcase the system's capabilities.
 
 ## Table of Contents
 
-- [Installation](#installation)
-- [Prerequisites](#prerequisites)
-- [Configuration](#configurations)
-- [Running the Application](#running-the-application)
-- [Database Setup](#database-setup)
-- [API Endpoints](#api-endpoints)
-- [API Documentation](#api-documentation)
-- [Technologies](#technologies)
-- [Contributing](#contributing)
-- [License](#license)
+- [🛠️ Installation](#installation)
+- [📋 Prerequisites](#prerequisites)
+- [⚙️ Configuration](#configurations)
+- [▶️ Running the Application](#running-the-application)
+- [💾 Database Setup](#database-setup)
+- [📡 API Endpoints](#api-endpoints)
+- [📚 API Documentation](#api-documentation)
+- [💻 Technologies](#technologies)
+- [👥 Contributing](#contributing)
+- [📝 License](#license)
 
 ### Prerequisites
 
@@ -36,7 +36,8 @@ Before running MarketplaceAPI, ensure you have the following prerequisites insta
 - [Java](https://www.oracle.com/java/technologies/javase-downloads.html)
 - [Maven](https://maven.apache.org/download.cgi) (for building the application)
 - Database Server (H2, MySQL,PostgresSQL) - Configured and running
-### Configurations
+
+### ⚙️ Configuration
 
 1. Clone the repository:
 
