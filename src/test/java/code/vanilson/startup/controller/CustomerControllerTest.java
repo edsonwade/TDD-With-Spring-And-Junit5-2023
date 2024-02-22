@@ -1,5 +1,6 @@
 package code.vanilson.startup.controller;
 
+import code.vanilson.startup.dto.CustomerDto;
 import code.vanilson.startup.model.Customer;
 import code.vanilson.startup.service.CustomerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +50,7 @@ class CustomerControllerTest {
     @DisplayName("Get Customer by ID")
     void testGetCustomerById() throws Exception {
         Long customerId = 1L;
-        Customer customer = new Customer(customerId, "John Doe", "john@example.com", "Address 1");
+        CustomerDto customer = new CustomerDto(customerId, "John Doe", "john@example.com", "Address 1");
 
         // Mock the service to return a customer by ID
         when(customerService.findCustomerById(customerId)).thenReturn(Optional.of(customer));
@@ -102,7 +103,7 @@ class CustomerControllerTest {
     void testDeleteCustomer() throws Exception {
         Long customerId = 1L;
         when(customerService.findCustomerById(customerId))
-                .thenReturn(Optional.of(new Customer(customerId, "John Doe", "john@example.com", "Address 1")));
+                .thenReturn(Optional.of(new CustomerDto(customerId, "John Doe", "john@example.com", "Address 1")));
         when(customerService.deleteCustomer(customerId)).thenReturn(true);
 
         mockMvc.perform(delete("/api/customers/delete/{id}", customerId))
@@ -125,7 +126,7 @@ class CustomerControllerTest {
         Long customerId = 1L;
 
         when(customerService.findCustomerById(customerId))
-                .thenReturn(Optional.of(new Customer(customerId, "John Doe", "john@example.com", "Address 1")));
+                .thenReturn(Optional.of(new CustomerDto(customerId, "John Doe", "john@example.com", "Address 1")));
         when(customerService.deleteCustomer(customerId)).thenReturn(false);
 
         mockMvc.perform(delete("/api/customers/delete/{id}", customerId))

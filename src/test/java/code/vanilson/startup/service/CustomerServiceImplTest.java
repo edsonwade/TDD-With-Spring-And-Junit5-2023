@@ -35,9 +35,11 @@ class CustomerServiceImplTest {
      * Object Customer
      */
     Customer customer;
+    CustomerDto customerDto;
 
     @BeforeEach
     void setUp() {
+        customerDto = new CustomerDto(1L, "test", "test@test.test", "test 1");
         customer = new Customer(1L, "test", "test@test.test", "test 1");
         customerRepositoryMock = mock(CustomerRepository.class);
         currentInstance = new CustomerServiceImpl(customerRepositoryMock);
@@ -73,7 +75,7 @@ class CustomerServiceImplTest {
     @DisplayName("Get Customer by id - Success")
     void testGetCustomerByIdSuccess() {
         when(customerRepositoryMock.findById(1L)).thenReturn(Optional.of(customer));
-        assertSame(currentInstance.findCustomerById(1L).get(), customer, "Customers should be the same");
+        assertEquals(customerDto, currentInstance.findCustomerById(1L).get(), "Customers should be the same");
         assertTrue(currentInstance.findCustomerById(1L).isPresent(), "Customer was  found");
         assertFalse(currentInstance.findCustomerById(1L).isEmpty());
         assertNotEquals(234L, currentInstance.findCustomerById(1L)
@@ -169,6 +171,37 @@ class CustomerServiceImplTest {
         assertThrows(ObjectWithIdNotFound.class,
                 () -> currentInstance.deleteCustomer(1L));
         verify(customerRepositoryMock).findById(1L);
+    }
+
+    @Test
+    @DisplayName("Delete Customer - Success")
+    void testDeleteCustomerSuccess() {
+        // Given
+        long customerId = 1L;
+        Customer customer = new Customer(customerId, "test", "test@test.test", "test 1");
+        when(customerRepositoryMock.findById(customerId)).thenReturn(Optional.of(customer));
+
+        // When
+        boolean result = currentInstance.deleteCustomers(customerId);
+
+        // Then
+        assertTrue(result, "Customer deletion should be successful");
+        verify(customerRepositoryMock, times(1)).delete(customer);
+    }
+
+    @Test
+    @DisplayName("Delete Customer - Not Found")
+    void testDeleteCustomerNotFounded() {
+        // Given
+        long customerId = 1L;
+        when(customerRepositoryMock.findById(customerId)).thenReturn(Optional.empty());
+
+        // When
+        assertThrows(ObjectWithIdNotFound.class, () -> currentInstance.deleteCustomers(customerId),
+                "Exception should be thrown when customer is not found");
+
+        // Then
+        verify(customerRepositoryMock, never()).delete(any());
     }
 
 }

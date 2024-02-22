@@ -20,7 +20,7 @@ public interface CustomerService {
      * @param id ID of the customer to retrieve.
      * @return The requested Customer if found.
      */
-    Optional<Customer> findCustomerById(Long id);
+    Optional<CustomerDto> findCustomerById(Long id);
 
     /**
      * Updates the specifiedCustomer, identified by its id.

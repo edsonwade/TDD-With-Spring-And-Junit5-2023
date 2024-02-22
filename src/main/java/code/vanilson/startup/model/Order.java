@@ -90,7 +90,6 @@ public class Order implements Serializable {
                 "orderId=" + orderId +
                 ", localDateTime=" + localDateTime +
                 ", customer=" + customer +
-                ", orderItems=" + orderItems +
                 '}';
     }
 }

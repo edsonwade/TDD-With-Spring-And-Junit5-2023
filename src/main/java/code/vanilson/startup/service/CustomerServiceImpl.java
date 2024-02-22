@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static code.vanilson.startup.mapper.CustomerMapper.*;
+
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
@@ -31,18 +33,18 @@ public class CustomerServiceImpl implements CustomerService {
     public List<CustomerDto> findAllCustomers() {
         List<Customer> customers = customerRepository.findAll();
         logger.info(" All customers");
-        return CustomerMapper.toCustomerDtoList(customers);
+        return toCustomerDtoList(customers);
 
     }
 
     @Override
-    public Optional<Customer> findCustomerById(Long id) {
+    public Optional<CustomerDto> findCustomerById(Long id) {
         Optional<Customer> customer = customerRepository.findById(id);
         if (customer.isEmpty()) {
             throw new ObjectWithIdNotFound(String.format("customer with id %d not found", id));
         }
         logger.info("Customer with id:{}", customer.get() + "found");
-        return customer;
+        return CustomerMapper.toCustomer(customer);
     }
 
     @Override
@@ -97,4 +99,25 @@ public class CustomerServiceImpl implements CustomerService {
         logger.info("Delete customer with id: {}", id);
         return true;
     }
+
+
+    @Transactional
+    public boolean deleteCustomers(long id) {
+        Optional<Customer> customerOptional = customerRepository.findById(id);
+
+        if (customerOptional.isEmpty()) {
+            throw new ObjectWithIdNotFound("Customer with id " + id + NOT_FOUND);
+        }
+
+        Customer customer = customerOptional.get();
+        CustomerDto customerDto = toCustomerDto(customer);
+
+        customerRepository.delete(customer);
+
+        logger.info("Delete CustomerDto with id: {}", customerDto.getCustomerId());
+        return true;
+    }
+
+
+
 }
