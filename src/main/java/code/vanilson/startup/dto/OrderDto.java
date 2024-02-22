@@ -1,9 +1,9 @@
 package code.vanilson.startup.dto;
 
 import code.vanilson.startup.model.OrderItem;
+import jakarta.validation.constraints.NotNull;
 import lombok.Value;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;

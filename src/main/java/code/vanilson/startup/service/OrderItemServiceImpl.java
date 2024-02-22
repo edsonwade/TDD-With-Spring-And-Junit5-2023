@@ -4,11 +4,11 @@ import code.vanilson.startup.exception.IllegalRequestException;
 import code.vanilson.startup.exception.ObjectWithIdNotFound;
 import code.vanilson.startup.model.OrderItem;
 import code.vanilson.startup.repository.OrderItemRepository;
+import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;

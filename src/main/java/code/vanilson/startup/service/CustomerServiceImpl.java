@@ -6,16 +6,17 @@ import code.vanilson.startup.exception.ObjectWithIdNotFound;
 import code.vanilson.startup.mapper.CustomerMapper;
 import code.vanilson.startup.model.Customer;
 import code.vanilson.startup.repository.CustomerRepository;
+import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static code.vanilson.startup.mapper.CustomerMapper.*;
+import static code.vanilson.startup.mapper.CustomerMapper.toCustomerDto;
+import static code.vanilson.startup.mapper.CustomerMapper.toCustomerDtoList;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -100,7 +101,6 @@ public class CustomerServiceImpl implements CustomerService {
         return true;
     }
 
-
     @Transactional
     public boolean deleteCustomers(long id) {
         Optional<Customer> customerOptional = customerRepository.findById(id);
@@ -117,7 +117,5 @@ public class CustomerServiceImpl implements CustomerService {
         logger.info("Delete CustomerDto with id: {}", customerDto.getCustomerId());
         return true;
     }
-
-
 
 }
