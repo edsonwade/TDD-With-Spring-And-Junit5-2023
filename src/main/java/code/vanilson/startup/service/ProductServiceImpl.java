@@ -5,11 +5,11 @@ import code.vanilson.startup.exception.ObjectWithIdNotFound;
 import code.vanilson.startup.mapper.ProductMapper;
 import code.vanilson.startup.model.Product;
 import code.vanilson.startup.repository.ProductRepository;
+import jakarta.validation.constraints.NotNull;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 

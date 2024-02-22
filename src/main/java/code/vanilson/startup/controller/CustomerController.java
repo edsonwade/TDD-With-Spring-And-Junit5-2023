@@ -3,13 +3,13 @@ package code.vanilson.startup.controller;
 import code.vanilson.startup.dto.CustomerDto;
 import code.vanilson.startup.model.Customer;
 import code.vanilson.startup.service.CustomerServiceImpl;
+import jakarta.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
@@ -44,7 +44,7 @@ public class CustomerController {
      * @return The customer with the specified ID.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Customer>> getCustomer(@PathVariable Long id) {
+    public ResponseEntity<Optional<CustomerDto>> getCustomer(@PathVariable Long id) {
         return ResponseEntity.ok()
                 .body(customerService.findCustomerById(id));
     }
@@ -100,7 +100,7 @@ public class CustomerController {
         logger.info("Deleting customer with ID {}", id);
 
         // Get the existing customer
-        Optional<Customer> existingCustomer = customerService.findCustomerById(id);
+        Optional<CustomerDto> existingCustomer = customerService.findCustomerById(id);
 
         return existingCustomer.map(p -> {
             if (customerService.deleteCustomer(p.getCustomerId())) {
