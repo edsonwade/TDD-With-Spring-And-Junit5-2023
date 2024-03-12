@@ -34,6 +34,8 @@
         </dependency>
 
         <dependency>
+
+
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-api</artifactId>
             <version>9.0.0</version> <!-- Adjust version as needed -->
@@ -42,6 +44,7 @@
 
 
         <dependency>
+
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.2.24</version> <!-- Replace with the latest version -->
