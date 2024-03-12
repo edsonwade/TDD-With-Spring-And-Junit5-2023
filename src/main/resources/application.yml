@@ -16,10 +16,21 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
+
       ddl-auto: update
+
+      ddl-auto: none
+      format_sql: true
+
 
 
     hikari:
       connectionTimeout: 20000
       maximumPoolSize: 5
+
+
+
+server:
+  port: 8081
+
 

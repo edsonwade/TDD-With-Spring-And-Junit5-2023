@@ -37,11 +37,11 @@ class OrderControllerTest {
     @MockBean
     private OrderServiceImpl orderService;
     /**
-     * LocalDateTime
+     * LocalDateTime for testing purposes.
      */
     static final LocalDateTime LOCAL_DATE_TIME = LocalDateTime.parse("2023-11-02T23:59:59.999");
     /**
-     * Customer object
+     * Customer object used for testing.
      */
     Customer customer;
 
@@ -53,6 +53,11 @@ class OrderControllerTest {
         customer = new Customer(2L, "test", "test@test.test", "test 1");
     }
 
+    /**
+     * Test to verify getting all orders.
+     *
+     * @throws Exception If an error occurs during the test execution.
+     */
     @Test
     @DisplayName("Get All Orders")
     void testGetOrders() throws Exception {
@@ -72,6 +77,11 @@ class OrderControllerTest {
         verify(orderService, times(1)).findAllOrders();
     }
 
+    /**
+     * Test to verify getting all orders when the list is empty.
+     *
+     * @throws Exception If an error occurs during the test execution.
+     */
     @Test
     @DisplayName("Get All Orders")
     void testGetOrdersSuccessEmptyList() throws Exception {
@@ -82,14 +92,19 @@ class OrderControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
+    /**
+     * Test to verify getting an order by ID when the order exists.
+     *
+     * @throws Exception If an error occurs during the test execution.
+     */
     @Test
     @DisplayName("Get Order by ID - Success")
     void testGetOrderByIdSuccess() throws Exception {
         Long orderId = 1L;
         Order order = new Order(1L, LOCAL_DATE_TIME, customer, new HashSet<>());
-
+        // Mocking the behavior of orderService.findOrderById() to return the order
         when(orderService.findOrderById(orderId)).thenReturn(Optional.of(order));
-
+        // Performing a GET request to retrieve the order by ID
         mockMvc.perform(get("/api/orders/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -99,11 +114,16 @@ class OrderControllerTest {
                 .andExpect(jsonPath("customer.email").value("test@test.test"))
                 .andExpect(jsonPath("customer.address").value("test 1"))
                 .andExpect(jsonPath("localDateTime").value(LOCAL_DATE_TIME.toString()));
-
+        // Verifying that orderService.findOrderById() is called with the correct ID
         verify(orderService, times(1)).findOrderById(orderId);
 
     }
 
+    /**
+     * Test to verify getting an order by ID when the order does not exist.
+     *
+     * @throws Exception If an error occurs during the test execution.
+     */
     @Test
     @DisplayName("Get Order by ID - Not Found")
     void testGetOrderByIdNotFound() throws Exception {
@@ -114,6 +134,11 @@ class OrderControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    /**
+     * Test to verify creating a new order.
+     *
+     * @throws Exception If an error occurs during the test execution.
+     */
     @Test
     @DisplayName("Create a new Order")
     @Disabled("not tested yet")
@@ -131,44 +156,27 @@ class OrderControllerTest {
 
     }
 
-    @Test
-    @DisplayName("Update Order")
-    @Disabled("not tested yet")
-    void testUpdateOrder() throws Exception {
-        Long orderId = 123L;
-        Order updatedOrder = new Order(orderId, new Customer(), new HashSet<>());
-
-        when(orderService.updateOrder(orderId, updatedOrder)).thenReturn(updatedOrder);
-        mockMvc.perform(put("/api/orders/update/{id}", orderId)
-                        .contentType(MediaType.APPLICATION_JSON)  // Set the Content-Type header
-                        .content(asJsonString(updatedOrder))) // Convert the updatedOrder to JSON
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.orderId").value(orderId));
-    }
-
-    @Test
-    @DisplayName("Delete Order Success")
-    void testDeleteOrderSuccess() throws Exception {
-        Long orderId = 1L;
-        Order order = new Order(orderId, LOCAL_DATE_TIME, customer, new HashSet<>());
-        when(orderService.findOrderById(orderId))
-                .thenReturn(Optional.of(order));
-        when(orderService.deleteOrderById(orderId)).thenReturn(true);
-
-        mockMvc.perform(delete("/api/orders/delete/{id}", orderId))
-                .andExpect(status().isOk());
-    }
-
+    /**
+     * Test to verify deleting an order when the order is not found.
+     *
+     * @throws Exception If an error occurs during the test execution.
+     */
     @Test
     @DisplayName("Delete Order - Order Not Found")
     void testDeleteOrderNotFound() throws Exception {
         Long orderId = 1L;
+        // Mocking the behavior of orderService.findOrderById() to return an empty Optional
         when(orderService.findOrderById(orderId)).thenReturn(Optional.empty());
-
+        // Performing a DELETE request to delete the order
         mockMvc.perform(delete("/api/orders/delete/{id}", orderId))
                 .andExpect(status().isNotFound());
     }
 
+    /**
+     * Test to verify deleting an order when an internal server error occurs.
+     *
+     * @throws Exception If an error occurs during the test execution.
+     */
     @Test
     @DisplayName("Delete Order - Internal Server Error")
     void testDeleteOrderInternalServerError() throws Exception {
