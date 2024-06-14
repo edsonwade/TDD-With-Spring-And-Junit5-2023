@@ -21,6 +21,14 @@ spring:
       show-sql: true
     database: postgresql
 
+  flyway:
+    locations: classpath:db/migration/
+    baseline-on-migrate: true
+    enabled: true
+    baseline-description: "init"
+    baseline-version: 0  # Different baseline version to avoid conflict
+    outOfOrder: true
+    ignoreMigrationPatterns: "*:ignored"  # Use ':' instead of '=' for key-value pairs
 
 
     hikari:
