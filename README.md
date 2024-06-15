@@ -115,15 +115,23 @@ http://localhost:8080/swagger-ui.html
 ## Technologies
 MarketplaceAPI leverages various technologies to provide a robust e-commerce solution:
 
-Docker: Containerization for easy deployment and scalability.
+Docker 🐳: Containerization technology for seamless deployment and scalability.
 
-Grafana and Prometheus: Monitoring and metrics gathering for performance analysis.
+Grafana and Prometheus 📊: Monitoring and metrics gathering tools for performance analysis and optimization.
 
-Mockito: A popular Java testing framework for unit testing and mocking.
+Mockito 🃏: A powerful Java testing framework for unit testing and mocking dependencies.
 
-CI/CD: Continuous Integration and Continuous Deployment pipelines to streamline development and deployment.
+CI/CD Pipelines 🔄: Implements Continuous Integration and Continuous Deployment to automate development processes and ensure rapid deployment.
 
-Spring Security: Secure your application with authentication and authorization features.
+Spring Security 🔒:Provides robust authentication and authorization features to secure your application and protect sensitive data.
+
+## Cucumber BDD Testing with TestContainers
+
+Cucumber BDD (Behavior-Driven Development): Utilizes Cucumber for writing executable specifications to ensure that your application behaves as expected from the user's perspective.
+
+TestContainers 🐋: Integrates TestContainers to manage Docker containers for testing purposes. TestContainers simplifies the setup and teardown of Docker containers during integration testing, ensuring a clean and isolated environment for your tests.
+
+
 
 ## Contributing
 - [Vanilson Muhongo](https://www.github.com/edsonwade)

@@ -1,21 +1,32 @@
 #########################################
-# Packaged spring boot app using maven
+# Build Stage: Build the application using Maven
 #########################################
-#FROM openjdk:16-jdk-alpine as as builder
-FROM maven:3.6-openjdk-11 as builder
+FROM maven:3.8.1-openjdk-17 as builder
 
-RUN mkdir -p /app
 WORKDIR /app
-ADD pom.xml .
+
+# First, copy only the pom.xml to leverage Docker cache for dependencies
+COPY pom.xml .
 RUN mvn dependency:go-offline -B
-COPY ./src ./src
+
+# Copy the rest of the source code and build the application
+COPY src src
 RUN mvn package -DskipTests
 
 
-FROM openjdk:11-jdk as runner
+#########################################
+# Package Stage: Create the final container image
+#########################################
+FROM openjdk:17
 
-COPY --from=builder /app/target/*.jar /app.jar
+# Set environment variables
+ENV SERVER_PORT=8081
 
+# Copy the built JAR file from the build stage to the new image
+COPY --from=builder /app/target/*.jar /marketplace.jar
+
+# Expose the port that the application will run on
 EXPOSE ${SERVER_PORT}
 
-ENTRYPOINT ["java","-jar","/app.jar"]
+# Specify the command to run your application
+ENTRYPOINT ["java", "-jar", "/marketplace.jar"]
