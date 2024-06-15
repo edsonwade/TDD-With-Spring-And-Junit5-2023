@@ -5,8 +5,8 @@ volumes:
     driver: local
   grafana-data:
     driver: local
-  mysql-data:
-
+  postgres-data:
+    driver: local
 
 services:
 
@@ -21,45 +21,45 @@ services:
     restart: unless-stopped
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
+    networks:
+      - mindswap-net
 
-  mindswap-app-mysql:
-    image: app_service
-    container_name: mindswap-app-2
+  marketplace-service:
+    build: .
+    container_name: marketplace-service
     depends_on:
-      mindswap-mysql:
-        condition: service_healthy
+      - mindswap-postgres
     ports:
-      - '8080:8080'
+      - '8081:8081'
     environment:
-      SPRING_DATA_SOURCE: com.mysql.cj.jdbc.Driver
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      DATABASE_URL: ${DB_HOST}
-      SERVER_PORT: '8080'
-      HIBERNATE_DDL_AUTO: 'none'
+      SPRING_DATASOURCE_URL: jdbc:postgresql://mindswap-postgres:5432/marketplace_api
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_DB_PASSWORD}
+      SERVER_PORT: '8081'
       SPRING_PROFILES_ACTIVE: 'docker'
+      SPRING_DATA_SOURCE: org.postgresql.Driver
+      HIBERNATE_DDL_AUTO: 'none'
     networks:
       - mindswap-net
 
-  mindswap-mysql:
-    image: mysql
-    container_name: mindswap-mysql
+  mindswap-postgres:
+    image: postgres:latest
+    container_name: mindswap-postgres
     ports:
-      - '3306:3306'
-    healthcheck:
-      test: "/usr/bin/mysql --user=root --password=mypass --execute \"SHOW DATABASES;\""
-      interval: 3s
-      timeout: 1s
-      retries: 10
+      - "5433:5432"
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
+      POSTGRES_DB: ${POSTGRES_DB_NAME}
+      POSTGRES_USER: ${POSTGRES_DB_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_DB_PASSWORD}
     volumes:
-      - mysql-data:/var/lib/mysql
-    restart: always
+      - postgres-data:/var/lib/postgresql/data
     networks:
       - mindswap-net
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_DB_USER}" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   grafana:
     image: grafana/grafana
@@ -69,7 +69,11 @@ services:
     volumes:
       - grafana-data:/var/lib/grafana
     restart: unless-stopped
+    networks:
+      - mindswap-net
 
 networks:
   mindswap-net:
     driver: bridge
+
+

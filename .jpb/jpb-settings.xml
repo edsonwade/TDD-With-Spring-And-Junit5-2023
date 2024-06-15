@@ -4,7 +4,7 @@
     <persistence-units>
       <persistence-unit moduleName="startup" name="Default">
         <packages>
-          <package value="code.vanilson.startup" />
+          <package value="code.vanilson.marketplace" />
         </packages>
       </persistence-unit>
     </persistence-units>

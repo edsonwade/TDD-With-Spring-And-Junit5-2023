@@ -22,9 +22,8 @@ target/
 *.ipr
 /data
 /src/main/resources/application.properties
-/src/test/java/code/vanilson/startup/integration
-/src/test/java/code/vanilson/startup/repository
 /src/test/java/code/vanilson/startup/config
+/.env
 
 ### NetBeans ###
 /nbproject/private/
