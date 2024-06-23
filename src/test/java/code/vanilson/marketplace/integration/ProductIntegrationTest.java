@@ -25,9 +25,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith({DBUnitExtension.class, SpringExtension.class})
 @SpringBootTest
-@ActiveProfiles("test")
 @AutoConfigureMockMvc
-class ProductServiceIntegrationTest {
+@ActiveProfiles("test")
+class ProductIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
