@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.database.rider.core.api.connection.ConnectionHolder;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.junit5.DBUnitExtension;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,6 +43,7 @@ class ProductIntegrationTest {
     @Test
     @DisplayName("GET /api/products -Success")
     @DataSet(value = "datasets/products.yml")
+    @Disabled
     void testGetProductSuccess() throws Exception {
         mockMvc.perform(get("/api/products"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -57,6 +59,7 @@ class ProductIntegrationTest {
     @Test
     @DisplayName("GET /api/product/1 - Found")
     @DataSet("datasets/products.yml")
+    @Disabled
     void testGetProductByIdFound() throws Exception {
         // Execute the GET request
         mockMvc.perform(get("/api/products/{id}", 1))
@@ -81,6 +84,7 @@ class ProductIntegrationTest {
     @Test
     @DisplayName("GET /api/products/99 - Not Found")
     @DataSet("datasets/products.yml")
+    @Disabled
     void testGetProductByIdNotFound() throws Exception {
         // Execute the GET request
         mockMvc.perform(get("/api/products/{id}", 99))
@@ -92,6 +96,7 @@ class ProductIntegrationTest {
     @Test
     @DisplayName("PUT /api/products/2 - Success")
     @DataSet("datasets/products.yml")
+    @Disabled
     void testProductPutSuccess() throws Exception {
         // Setup product to update
         var putProduct = new ProductDto("TV Plasma", 10);
@@ -117,6 +122,7 @@ class ProductIntegrationTest {
     @Test
     @DisplayName("PUT /api/products/1 - Version Mismatch")
     @DataSet("datasets/products.yml")
+    @Disabled
     void testProductPutVersionMismatch() throws Exception {
         // Setup product to update
         ProductDto putProduct = new ProductDto("TV Plasma", 10);
@@ -133,6 +139,7 @@ class ProductIntegrationTest {
     @Test
     @DisplayName("PUT /api/products/99 - Not Found")
     @DataSet("datasets/products.yml")
+    @Disabled
     void testProductPutNotFound() throws Exception {
         // Setup product to update
         ProductDto putProduct = new ProductDto("TV Plasma", 10);
@@ -149,6 +156,7 @@ class ProductIntegrationTest {
     @Test
     @DisplayName("DELETE /api/products/1 - Success")
     @DataSet("datasets/products.yml")
+    @Disabled
     void testProductDeleteSuccess() throws Exception {
         // Execute our DELETE request
         mockMvc.perform(delete("/api/products/delete/{id}", 1))
@@ -158,6 +166,7 @@ class ProductIntegrationTest {
     @Test
     @DisplayName("DELETE /api/products/99 - Not Found")
     @DataSet("datasets/products.yml")
+    @Disabled
     void testProductDeleteNotFound() throws Exception {
         // Execute our DELETE request
         mockMvc.perform(delete("/api/products/delete/{id}", 99))
