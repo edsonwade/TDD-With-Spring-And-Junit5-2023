@@ -20,7 +20,6 @@ target/
 *.iws
 *.iml
 *.ipr
-/data
 /src/main/resources/application.properties
 /src/test/java/code/vanilson/startup/config
 /src/test/resources/config/application-test.yml
