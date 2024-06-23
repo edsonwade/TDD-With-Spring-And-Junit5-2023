@@ -9,11 +9,9 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
-import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +31,7 @@ import static org.mockito.Mockito.*;
  * @since 2024-06-15
  */
 
-@TestPropertySource(locations = "classpath:application-test.yml")
-@Slf4j
-public class CustomerServiceSteps extends CucumberSpringConfiguration {
+public class CustomerServiceSteps {
 
     private final CustomerRepository customerRepository = mock(CustomerRepository.class);
 
@@ -54,6 +50,7 @@ public class CustomerServiceSteps extends CucumberSpringConfiguration {
         savedCustomer = new Customer(123L, "test01", "testo1@teste.test", "test 4");
         exception = null;
     }
+
     /**
      * Step definition to populate the customer repository with the provided list of customers.
      *
@@ -68,6 +65,7 @@ public class CustomerServiceSteps extends CucumberSpringConfiguration {
         // Mocking behavior of customerRepository.findAll()
         when(customerRepository.findAll()).thenReturn(customers);
     }
+
     /**
      * Step definition to mock the presence of a customer with a specific ID in the repository.
      *
@@ -78,6 +76,7 @@ public class CustomerServiceSteps extends CucumberSpringConfiguration {
         Customer customer = new Customer(id, "test", "test@test.test", "test 1");
         when(customerRepository.findById(id)).thenReturn(Optional.of(customer));
     }
+
     /**
      * Step definition to mock the absence of a customer with a specific ID in the repository.
      *
@@ -88,6 +87,7 @@ public class CustomerServiceSteps extends CucumberSpringConfiguration {
     public void the_customer_repository_does_not_contain_a_customer_with_id(Long id) {
         when(customerRepository.findById(id)).thenReturn(Optional.empty());
     }
+
     /**
      * Step definition to initialize a new customer with details from the DataTable.
      *
@@ -130,6 +130,7 @@ public class CustomerServiceSteps extends CucumberSpringConfiguration {
         // Mock repository behavior to return Optional of existingCustomer
         when(customerRepository.findById(existingCustomer.getCustomerId())).thenReturn(Optional.of(existingCustomer));
     }
+
     /**
      * Step definition to request all customers from the service and map them to DTOs.
      */
@@ -138,6 +139,7 @@ public class CustomerServiceSteps extends CucumberSpringConfiguration {
         List<CustomerDto> customerDtos = customerService.findAllCustomers();
         customers = CustomerMapper.toCustomerList(customerDtos);
     }
+
     /**
      * Step definition to request a customer with a specific ID from the service.
      *
@@ -152,6 +154,7 @@ public class CustomerServiceSteps extends CucumberSpringConfiguration {
             exception = e;
         }
     }
+
     /**
      * Step definition to mock the behavior of saving a customer in the repository.
      */
@@ -163,6 +166,7 @@ public class CustomerServiceSteps extends CucumberSpringConfiguration {
             exception = e;
         }
     }
+
     /**
      * Step definition to attempt to save a null customer in the service.
      */
@@ -174,6 +178,7 @@ public class CustomerServiceSteps extends CucumberSpringConfiguration {
             exception = e;
         }
     }
+
     /**
      * Step definition to update a customer with a specific ID to have new details.
      *
@@ -190,6 +195,7 @@ public class CustomerServiceSteps extends CucumberSpringConfiguration {
             exception = e;
         }
     }
+
     /**
      * Step definition to attempt to update a customer with a specific ID.
      *
@@ -205,6 +211,7 @@ public class CustomerServiceSteps extends CucumberSpringConfiguration {
             exception = e;
         }
     }
+
     /**
      * Step definition to attempt to update a customer with a specific ID using a null customer object.
      *
@@ -218,6 +225,7 @@ public class CustomerServiceSteps extends CucumberSpringConfiguration {
             exception = e;
         }
     }
+
     /**
      * Step definition to attempt to delete a customer with a specific ID.
      *
@@ -231,6 +239,7 @@ public class CustomerServiceSteps extends CucumberSpringConfiguration {
             exception = e;
         }
     }
+
     /**
      * Step definition to assert that the received list of customers matches the expected details.
      *
@@ -243,6 +252,7 @@ public class CustomerServiceSteps extends CucumberSpringConfiguration {
         ).toList();
         assertEquals(expectedCustomers, customers);
     }
+
     /**
      * Step definition to assert that the received customer details match the expected details for a specific ID.
      *
@@ -256,6 +266,7 @@ public class CustomerServiceSteps extends CucumberSpringConfiguration {
         Customer expectedCustomer = new Customer(id, row.get("name"), row.get("email"), row.get("address"));
         assertEquals(expectedCustomer, savedCustomer);
     }
+
     /**
      * Step definition to assert that an error message received matches the expected error message.
      *
@@ -282,6 +293,7 @@ public class CustomerServiceSteps extends CucumberSpringConfiguration {
         var actualCurrent = customerService.saveCustomer(expectedCustomer);
         assertEquals(savedCustomer, expectedCustomer);
     }
+
     /**
      * Step definition to assert that a customer should be updated with specific details.
      *
@@ -306,6 +318,7 @@ public class CustomerServiceSteps extends CucumberSpringConfiguration {
     public void the_customer_with_id_should_be_deleted_successfully(Long id) {
         verify(customerRepository, times(1)).delete(any(Customer.class));
     }
+
     /**
      * Step definition to delete a customer with a specific ID.
      *
