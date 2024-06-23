@@ -40,7 +40,7 @@ class ProductIntegrationTest {
 
     @Test
     @DisplayName("GET /api/products -Success")
-    @DataSet("datasets/products.yml")
+    @DataSet(value = "datasets/products.yml")
     void testGetProductSuccess() throws Exception {
         mockMvc.perform(get("/api/products"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
