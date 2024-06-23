@@ -5,16 +5,14 @@ import code.vanilson.marketplace.model.Customer;
 import code.vanilson.marketplace.model.Order;
 import code.vanilson.marketplace.service.OrderServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -141,20 +139,26 @@ class OrderControllerTest {
      */
     @Test
     @DisplayName("Create a new Order")
-    @Disabled("not tested yet")
     void testCreateOrder() throws Exception {
-        Order order = new Order();
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonContent = objectMapper.writeValueAsString(order);
+        // Create a sample Order object
+        Order order = new Order(LocalDateTime.now(), customer, new HashSet<>());
 
+        // Mock the service response when saving the order
+        when(orderService.saveOrder(any(Order.class))).thenAnswer(invocation -> {
+            Order savedOrder = invocation.getArgument(0);
+            savedOrder.setOrderId(1L); // Simulate saving and setting the orderId
+            return savedOrder;
+        });
+
+        // Perform the POST request
         mockMvc.perform(post("/api/orders/create")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonContent))
-                .andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.orderId").exists());
-
+                        .content(asJsonString(order)))
+                .andExpect(status().isCreated()) // Expect HTTP 201 Created
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON)) // Expect JSON response
+                .andExpect(jsonPath("$.orderId").exists()); // Expect orderId field in the response JSON
     }
+
 
     /**
      * Test to verify deleting an order when the order is not found.
@@ -193,14 +197,16 @@ class OrderControllerTest {
     /**
      * Utility method to convert an object to JSON string
      */
-    private String asJsonString(Object obj) {
+    static String asJsonString(final Object obj) {
         try {
-            final ObjectMapper objectMapper = new ObjectMapper();
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
             return objectMapper.writeValueAsString(obj);
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
+
 
 }
 

@@ -1,11 +1,12 @@
 package code.vanilson.marketplace.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -20,8 +21,10 @@ public class OrderItem implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_item_id", nullable = false)
     private Long orderItemId;
+    @Setter
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
+    @JsonBackReference
     private Order order;
 
     @ManyToOne
@@ -44,10 +47,6 @@ public class OrderItem implements Serializable {
         this.order = order;
         this.product = product;
         this.quantity = quantity;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
     }
 
     @Override

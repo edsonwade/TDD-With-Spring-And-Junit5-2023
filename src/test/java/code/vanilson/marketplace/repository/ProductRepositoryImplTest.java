@@ -39,15 +39,15 @@ class ProductRepositoryImplTest {
 
         // Validate that we found it
         Assertions.assertTrue(product.isPresent(),
-                "code.vanilson.marketplace.product.ProductSteps with ID 2 should be found");
+                "product with ID 2 should be found");
 
         // Validate the product values
         Product p = product.get();
-        assertEquals(2, p.getProductId().intValue(), "code.vanilson.marketplace.product.ProductSteps ID should be 2");
+        assertEquals(2, p.getProductId().intValue(), "product ID should be 2");
         assertEquals("Keyboard", p.getName(),
-                "code.vanilson.marketplace.product.ProductSteps name should be \"code.vanilson.marketplace.product.ProductSteps 2\"");
-        assertEquals(5, p.getQuantity().intValue(), "code.vanilson.marketplace.product.ProductSteps quantity should be 5");
-        assertEquals(2, p.getVersion().intValue(), "code.vanilson.marketplace.product.ProductSteps version should be 2");
+                "product name should be \"product 2\"");
+        assertEquals(5, p.getQuantity().intValue(), "product quantity should be 5");
+        assertEquals(2, p.getVersion().intValue(), "product version should be 2");
     }
 
     @Test
@@ -58,7 +58,7 @@ class ProductRepositoryImplTest {
 
         // Validate that we found it
         Assertions.assertFalse(product.isPresent(),
-                "code.vanilson.marketplace.product.ProductSteps with ID 4 should be not be found");
+                " product with ID 4 should be not be found");
     }
 
     @Test
@@ -99,7 +99,7 @@ class ProductRepositoryImplTest {
         // Validate that the product has been deleted
         Optional<Product> product = repository.findById(1);
         Assertions.assertFalse(product.isPresent(),
-                "code.vanilson.marketplace.product.ProductSteps with ID 1 should have been deleted");
+                "product with ID 1 should have been deleted");
     }
 
     @Test

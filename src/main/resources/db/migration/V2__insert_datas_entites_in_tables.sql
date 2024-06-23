@@ -7,7 +7,6 @@ VALUES
     ('Eve Davis', 'davis@example.com', '246 Cedar Rd, County'),
     ('Charlie Brown', 'brown@example.com', '555 Maple Ln, Hamlet');
 
--- Insert other entities (products, orders, etc.)
 INSERT INTO tb_products (name, quantity, version)
 VALUES
     ('Product A', 10, 1),
