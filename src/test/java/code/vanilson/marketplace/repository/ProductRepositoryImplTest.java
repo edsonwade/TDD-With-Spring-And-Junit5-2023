@@ -58,7 +58,7 @@ class ProductRepositoryImplTest {
 
         // Validate that we found it
         Assertions.assertFalse(product.isPresent(),
-                "code.vanilson.marketplace.product.ProductSteps with ID 4 should be not be found");
+                " product with ID 4 should be not be found");
     }
 
     @Test
@@ -99,7 +99,7 @@ class ProductRepositoryImplTest {
         // Validate that the product has been deleted
         Optional<Product> product = repository.findById(1);
         Assertions.assertFalse(product.isPresent(),
-                "code.vanilson.marketplace.product.ProductSteps with ID 1 should have been deleted");
+                "product with ID 1 should have been deleted");
     }
 
     @Test

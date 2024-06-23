@@ -6,6 +6,7 @@ import code.vanilson.marketplace.model.Order;
 import code.vanilson.marketplace.model.OrderItem;
 import code.vanilson.marketplace.repository.OrderRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotNull;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -45,8 +46,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order saveOrder(Order order) {
-        if (Objects.isNull(order)) {
+    public Order saveOrder(@NotNull Order order) {
+        if (order == null) {
             logger.error("The 'order' object must not be:{}", order);
             throw new IllegalRequestException(THE_ORDER_OBJECT_MUST_NOT_BE_NULL);
         }

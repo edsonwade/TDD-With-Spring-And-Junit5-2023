@@ -25,7 +25,7 @@ public class Customer implements Serializable {
     @Column(unique = true, length = 45)
     private String email;
     private String address;
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Order> orders;
 
@@ -50,15 +50,27 @@ public class Customer implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {return true;}
-        if (o == null || getClass() != o.getClass()) {return false;}
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Customer customer = (Customer) o;
 
-        if (!Objects.equals(customerId, customer.customerId)) {return false;}
-        if (!Objects.equals(name, customer.name)) {return false;}
-        if (!Objects.equals(email, customer.email)) {return false;}
-        if (!Objects.equals(address, customer.address)) {return false;}
+        if (!Objects.equals(customerId, customer.customerId)) {
+            return false;
+        }
+        if (!Objects.equals(name, customer.name)) {
+            return false;
+        }
+        if (!Objects.equals(email, customer.email)) {
+            return false;
+        }
+        if (!Objects.equals(address, customer.address)) {
+            return false;
+        }
         return Objects.equals(orders, customer.orders);
     }
 

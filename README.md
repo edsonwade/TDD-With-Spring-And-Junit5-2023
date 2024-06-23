@@ -53,6 +53,7 @@ Before running MarketplaceAPI, ensure you have the following prerequisites insta
    spring.datasource.url=jdbc:mysql://your-database-url:3306/your-database
    spring.datasource.username={your-database-username}
    spring.datasource.password={your-database-password}
+   flyway migration on liqui
    ````
 4. Save the changes to the application.properties file.
 

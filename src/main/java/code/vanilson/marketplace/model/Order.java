@@ -39,18 +39,19 @@ public class Order implements Serializable {
         //default constructor
     }
 
-    public Order(Long orderId, LocalDateTime localDateTime) {
-        this.orderId = orderId;
+    public Order(LocalDateTime localDateTime, Customer customer, Set<OrderItem> orderItems) {
         this.localDateTime = localDateTime;
+        this.customer = customer;
+        this.orderItems = orderItems;
     }
 
-    public Order(Long orderId, Customer customer, Set<OrderItem> orderItems) {
+    public Order(long orderId, Customer customer, Set<OrderItem> orderItems) {
         this.orderId = orderId;
         this.customer = customer;
         this.orderItems = orderItems;
     }
 
-    public Order(Long orderId, LocalDateTime localDateTime, Customer customer, Set<OrderItem> orderItems) {
+    public Order(long orderId, LocalDateTime localDateTime, Customer customer, Set<OrderItem> orderItems) {
         this.orderId = orderId;
         this.localDateTime = localDateTime;
         this.customer = customer;

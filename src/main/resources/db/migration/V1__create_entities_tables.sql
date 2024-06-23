@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS tb_customers
     address     VARCHAR(255)
 );
 
-CREATE  TABLE  IF NOT EXISTS tb_products
+CREATE TABLE IF NOT EXISTS tb_products
 (
     product_id SERIAL PRIMARY KEY,
     name       VARCHAR(255),
@@ -14,15 +14,18 @@ CREATE  TABLE  IF NOT EXISTS tb_products
     version    INT
 );
 
-CREATE TABLE  IF NOT EXISTS tb_orders
+CREATE TABLE IF NOT EXISTS tb_orders
 (
     order_id    SERIAL PRIMARY KEY,
     customer_id INT,
     order_date  TIMESTAMP,
-    FOREIGN KEY (customer_id) REFERENCES tb_customers (customer_id)
+    FOREIGN KEY (customer_id)
+        REFERENCES tb_customers (customer_id)
+        ON DELETE CASCADE
 );
 
-CREATE TABLE  IF NOT EXISTS tb_order_items
+
+CREATE TABLE IF NOT EXISTS tb_order_items
 (
     order_item_id SERIAL PRIMARY KEY,
     order_id      INT,
@@ -32,7 +35,5 @@ CREATE TABLE  IF NOT EXISTS tb_order_items
     FOREIGN KEY (product_id) REFERENCES tb_products (product_id)
 );
 
-ALTER TABLE  tb_customers
+ALTER TABLE tb_customers
     ADD CONSTRAINT uc_tb_customer_email UNIQUE (email);
-
--- Your INSERT statements go here

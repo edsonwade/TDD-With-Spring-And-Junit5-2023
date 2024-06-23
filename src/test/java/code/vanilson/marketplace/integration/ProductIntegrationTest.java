@@ -2,6 +2,7 @@ package code.vanilson.marketplace.integration;
 
 import code.vanilson.marketplace.dto.ProductDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.database.rider.core.api.connection.ConnectionHolder;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.junit5.DBUnitExtension;
@@ -19,14 +20,13 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import javax.sql.DataSource;
 
-import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith({DBUnitExtension.class, SpringExtension.class})
 @SpringBootTest
-@AutoConfigureMockMvc
 @ActiveProfiles("test")
+@AutoConfigureMockMvc
 class ProductIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
@@ -34,13 +34,14 @@ class ProductIntegrationTest {
     @Autowired
     private DataSource dataSource;
 
+    @SuppressWarnings("unused")
     public ConnectionHolder getConnectionHolder() {
         return () -> dataSource.getConnection();
     }
 
     @Test
     @DisplayName("GET /api/products -Success")
-    @DataSet("datasets/products.yml")
+    @DataSet(value = "datasets/products.yml")
     void testGetProductSuccess() throws Exception {
         mockMvc.perform(get("/api/products"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -69,10 +70,12 @@ class ProductIntegrationTest {
                 .andExpect(header().string(HttpHeaders.LOCATION, "/products/1"))
 
                 // Validate the returned fields
-                .andExpect(jsonPath("$.productId", is(1)))
-                .andExpect(jsonPath("$.name", is("Computer")))
-                .andExpect(jsonPath("$.quantity", is(10)))
-                .andExpect(jsonPath("$.version", is(1)));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.productId").value(1))
+                .andExpect(jsonPath("$.name").value("Computer"))
+                .andExpect(jsonPath("$.quantity").value(10))
+                .andExpect(jsonPath("$.version").value(1));
     }
 
     @Test
@@ -91,26 +94,24 @@ class ProductIntegrationTest {
     @DataSet("datasets/products.yml")
     void testProductPutSuccess() throws Exception {
         // Setup product to update
-        ProductDto putProduct = new ProductDto("TV Plasma", 10);
+        var putProduct = new ProductDto("TV Plasma", 10);
 
-        mockMvc.perform(put("/api/products/update/{id}", 2)
+        mockMvc.perform(put("/api/products/update/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header(HttpHeaders.IF_MATCH, 2)
+                        .header(HttpHeaders.IF_MATCH, 1)
                         .content(asJsonString(putProduct)))
-
-                // Validate the response code and content type
+                //validate the  response content type and code
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-
-                // Validate the headers
-                .andExpect(header().string(HttpHeaders.ETAG, "\"3\""))
-                .andExpect(header().string(HttpHeaders.LOCATION, "/products/2"))
-
-                // Validate the returned fields
-                .andExpect(jsonPath("$.productId", is(2)))
-                .andExpect(jsonPath("$.name", is("TV Plasma")))
-                .andExpect(jsonPath("$.quantity", is(10)))
-                .andExpect(jsonPath("$.version", is(3)));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                //validate the headers
+                .andExpect(header().string(HttpHeaders.ETAG, "\"2\""))
+                .andExpect(header().string(HttpHeaders.LOCATION, "/products/1"))
+                // return fields
+                .andExpect(jsonPath("$.size()").value(4))
+                .andExpect(jsonPath("$.productId").value(1))
+                .andExpect(jsonPath("$.name").value("TV Plasma"))
+                .andExpect(jsonPath("$.quantity").value(10))
+                .andExpect(jsonPath("$.version").value(2));
     }
 
     @Test
@@ -163,9 +164,14 @@ class ProductIntegrationTest {
                 .andExpect(status().isNotFound());
     }
 
+    /**
+     * Utility method to convert an object to JSON string
+     */
     static String asJsonString(final Object obj) {
         try {
-            return new ObjectMapper().writeValueAsString(obj);
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            return objectMapper.writeValueAsString(obj);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
