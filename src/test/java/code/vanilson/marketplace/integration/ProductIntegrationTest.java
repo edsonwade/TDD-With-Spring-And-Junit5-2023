@@ -25,8 +25,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith({DBUnitExtension.class, SpringExtension.class})
 @SpringBootTest
-@AutoConfigureMockMvc
 @ActiveProfiles("test")
+@AutoConfigureMockMvc
 class ProductIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
@@ -34,6 +34,7 @@ class ProductIntegrationTest {
     @Autowired
     private DataSource dataSource;
 
+    @SuppressWarnings("unused")
     public ConnectionHolder getConnectionHolder() {
         return () -> dataSource.getConnection();
     }
