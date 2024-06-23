@@ -39,15 +39,15 @@ class ProductRepositoryImplTest {
 
         // Validate that we found it
         Assertions.assertTrue(product.isPresent(),
-                "product with ID 2 should be found");
+                "code.vanilson.marketplace.product.ProductSteps with ID 2 should be found");
 
         // Validate the product values
         Product p = product.get();
-        assertEquals(2, p.getProductId().intValue(), "product ID should be 2");
+        assertEquals(2, p.getProductId().intValue(), "code.vanilson.marketplace.product.ProductSteps ID should be 2");
         assertEquals("Keyboard", p.getName(),
-                "product name should be \"product 2\"");
-        assertEquals(5, p.getQuantity().intValue(), "product quantity should be 5");
-        assertEquals(2, p.getVersion().intValue(), "product version should be 2");
+                "code.vanilson.marketplace.product.ProductSteps name should be \"code.vanilson.marketplace.product.ProductSteps 2\"");
+        assertEquals(5, p.getQuantity().intValue(), "code.vanilson.marketplace.product.ProductSteps quantity should be 5");
+        assertEquals(2, p.getVersion().intValue(), "code.vanilson.marketplace.product.ProductSteps version should be 2");
     }
 
     @Test
