@@ -89,7 +89,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public boolean deleteCustomer(long id) {
-        Optional<Customer> customers = customerRepository.findById(id);
+        var customers = customerRepository.findById(id);
         if (customers.isEmpty()) {
             throw new ObjectWithIdNotFound("customer with id " + id + NOT_FOUND);
         }
@@ -100,14 +100,14 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Transactional
     public boolean deleteCustomers(long id) {
-        Optional<Customer> customerOptional = customerRepository.findById(id);
+        var customerOptional = customerRepository.findById(id);
 
         if (customerOptional.isEmpty()) {
             throw new ObjectWithIdNotFound("Customer with id " + id + NOT_FOUND);
         }
 
-        Customer customer = customerOptional.get();
-        CustomerDto customerDto = CustomerMapper.toCustomerDto(customer);
+        var customer = customerOptional.get();
+        var customerDto = CustomerMapper.toCustomerDto(customer);
 
         customerRepository.delete(customer);
 

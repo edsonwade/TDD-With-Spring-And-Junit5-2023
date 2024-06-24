@@ -39,7 +39,7 @@ class ProductControllerTest {
     @DisplayName("GET /api/products -Success")
     void testGetProductSuccess() throws Exception {
 
-        when(productServiceMock.findAll())
+        when(productServiceMock.findAllProducts())
                 .thenReturn(
                         List.of(
                                 new ProductDto(1, "Computer", 34, 2004),
@@ -55,7 +55,7 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$[0].quantity").value(34))
                 .andExpect(jsonPath("$[0].version").value(2004));
 
-        verify(productServiceMock, times(1)).findAll();
+        verify(productServiceMock, times(1)).findAllProducts();
 
     }
 

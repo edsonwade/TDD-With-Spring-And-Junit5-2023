@@ -27,6 +27,13 @@ public class ProductMapper {
                 .collect(Collectors.toList());
     }
 
+    public static List<Product> toProductList(List<ProductDto> productList) {
+        return productList.stream()
+                .map(ProductMapper::toProduct)
+                .collect(Collectors.toList());
+    }
+
+    // Method to convert ProductDto to Product
     public static Product toProduct(ProductDto productDto) {
         if (productDto == null) {
             return null;

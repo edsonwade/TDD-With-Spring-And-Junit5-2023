@@ -11,7 +11,7 @@ public interface ProductService {
      *
      * @return All products in the database.
      */
-    List<ProductDto> findAll();
+    List<ProductDto> findAllProducts();
 
     /**
      * Returns the product with the specified id.

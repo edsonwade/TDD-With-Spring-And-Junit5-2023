@@ -31,7 +31,7 @@ public class ProductController {
      */
     @GetMapping
     public ResponseEntity<Iterable<ProductDto>> getProducts() {
-        return ResponseEntity.ok().body(productService.findAll());
+        return ResponseEntity.ok().body(productService.findAllProducts());
     }
 
     /**

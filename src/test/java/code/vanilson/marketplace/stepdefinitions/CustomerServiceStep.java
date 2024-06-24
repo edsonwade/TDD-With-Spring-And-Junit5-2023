@@ -31,7 +31,7 @@ import static org.mockito.Mockito.*;
  * @since 2024-06-15
  */
 
-public class CustomerServiceSteps {
+public class CustomerServiceStep {
 
     private final CustomerRepository customerRepository = mock(CustomerRepository.class);
 
@@ -95,7 +95,7 @@ public class CustomerServiceSteps {
      */
 
     @Given("a new customer with details")
-    public void a_new_customer_with_details(io.cucumber.datatable.DataTable dataTable) {
+    public void a_new_customer_with_details(DataTable dataTable) {
         List<Map<String, String>> rows = dataTable.asMaps();
         Map<String, String> row = rows.get(0);
         savedCustomer =
@@ -148,7 +148,7 @@ public class CustomerServiceSteps {
     @When("I request the customer with id {long}")
     public void i_request_the_customer_with_id(Long id) {
         try {
-            Optional<CustomerDto> customerDto = customerService.findCustomerById(id);
+            var customerDto = customerService.findCustomerById(id);
             savedCustomer = CustomerMapper.toCustomer(customerDto.orElse(null));
         } catch (Exception e) {
             exception = e;

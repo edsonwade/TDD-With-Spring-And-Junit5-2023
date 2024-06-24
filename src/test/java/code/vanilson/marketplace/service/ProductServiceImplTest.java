@@ -55,7 +55,7 @@ class ProductServiceImplTest {
         when(productRepositoryMock.findAll()).thenReturn(products);
 
         // Call the method under test
-        var productDtos = currentInstance.findAll();
+        var productDtos = currentInstance.findAllProducts();
 
         // Assertions
         assertNotNull(productDtos, "true");
@@ -143,7 +143,7 @@ class ProductServiceImplTest {
                 assertThrows(ObjectWithIdNotFound.class, () -> currentInstance.delete(nonExistingProductId));
 
         // Asserts
-        assertEquals(" product with 2 not found", exception.getMessage());
+        assertEquals("Product with id 2 not found", exception.getMessage());
 
         // Verify that findById was called as expected
         verify(productRepositoryMock, times(1)).findById(nonExistingProductId);
