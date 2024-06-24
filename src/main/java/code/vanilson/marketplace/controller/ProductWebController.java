@@ -22,7 +22,7 @@ public class ProductWebController {
 
     @GetMapping
     public String listProducts(Model model) {
-        model.addAttribute("products", productService.findAll());
+        model.addAttribute("products", productService.findAllProducts());
         return "product-list";
     }
 
