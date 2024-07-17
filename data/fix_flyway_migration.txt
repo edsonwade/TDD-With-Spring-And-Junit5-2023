@@ -17,4 +17,4 @@ to fix flyway migration we need to
 
 2- mvn flyway:repair
 
-3- mvn flyway:migration
+3- mvn flyway:migrate
