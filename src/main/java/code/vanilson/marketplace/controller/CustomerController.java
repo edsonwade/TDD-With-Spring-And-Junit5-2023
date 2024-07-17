@@ -3,12 +3,16 @@ package code.vanilson.marketplace.controller;
 import code.vanilson.marketplace.dto.CustomerDto;
 import code.vanilson.marketplace.model.Customer;
 import code.vanilson.marketplace.service.CustomerServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,6 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/customers")
+@Tag(name = "Customer API", description = "API for managing customers")
 public class CustomerController {
 
     private static final Logger logger = LogManager.getLogger(CustomerController.class);
@@ -33,6 +38,10 @@ public class CustomerController {
      * @return All customers in the database.
      */
     @GetMapping
+    @Operation(summary = "Get all customers", description = "Returns a list of all customers")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved all customers")
+    })
     public ResponseEntity<Iterable<CustomerDto>> getCustomers() {
         return ResponseEntity.ok().body(customerService.findAllCustomers());
     }
@@ -44,6 +53,11 @@ public class CustomerController {
      * @return The customer with the specified ID.
      */
     @GetMapping("/{id}")
+    @Operation(summary = "Get customer by ID", description = "Returns the customer with the specified ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved the customer"),
+            @ApiResponse(responseCode = "404", description = "Customer not found")
+    })
     public ResponseEntity<Optional<CustomerDto>> getCustomer(@PathVariable Long id) {
         return ResponseEntity.ok()
                 .body(customerService.findCustomerById(id));
@@ -55,6 +69,13 @@ public class CustomerController {
      * @param customer The customer to create.
      * @return The created customer.
      */
+
+    @Operation(summary = "Create a new customer", description = "Creates a new customer with the provided details")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successfully created the customer"),
+            @ApiResponse(responseCode = "400", description = "Invalid customer data")
+    })
+
     @PostMapping("/create")
     public ResponseEntity<Customer> createCustomer(@Valid @RequestBody Customer customer) {
         logger.info("Creating new customer with name: {}, email: {}, address: {}",
@@ -77,7 +98,18 @@ public class CustomerController {
 
     /**
      * Updates the fields in the specified customer with the specified ID.
+     *
+     * @param customer The updated customer data.
+     * @param id       The ID of the customer to update.
+     * @return The updated customer.
      */
+    @Operation(summary = "Update a customer",
+            description = "Updates the fields of the specified customer with the provided details")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully updated the customer"),
+            @ApiResponse(responseCode = "400", description = "Invalid customer data"),
+            @ApiResponse(responseCode = "404", description = "Customer not found")
+    })
     @PutMapping("/update/{id}")
     public ResponseEntity<Customer> updateCustomer(@Valid @RequestBody Customer customer,
                                                    @PathVariable Long id) {
@@ -95,6 +127,12 @@ public class CustomerController {
      * 500 Internal Service Error if an error occurs during deletion
      */
     @DeleteMapping("/delete/{id}")
+    @Operation(summary = "Delete a customer", description = "Deletes the customer with the specified ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully deleted the customer"),
+            @ApiResponse(responseCode = "404", description = "Customer not found"),
+            @ApiResponse(responseCode = "500", description = "Error occurred during deletion")
+    })
     public ResponseEntity<?> deleteCustomer(@PathVariable Long id) {
 
         logger.info("Deleting customer with ID {}", id);

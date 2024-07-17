@@ -27,6 +27,11 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerRepository = customerRepository;
     }
 
+    /**
+     * Retrieves a list of all customers from the database.
+     *
+     * @return A list of CustomerDto objects representing all customers.
+     */
     @Override
     public List<CustomerDto> findAllCustomers() {
         List<Customer> customers = customerRepository.findAll();
@@ -34,6 +39,14 @@ public class CustomerServiceImpl implements CustomerService {
         return CustomerMapper.toCustomerDtoList(customers);
 
     }
+
+    /**
+     * Retrieves a customer by their unique identifier.
+     *
+     * @param id The unique identifier of the customer.
+     * @return An Optional containing the CustomerDto object if found, otherwise an empty Optional.
+     * @throws ObjectWithIdNotFound If a customer with the specified ID is not found.
+     */
 
     @Override
     public Optional<CustomerDto> findCustomerById(Long id) {
@@ -45,6 +58,13 @@ public class CustomerServiceImpl implements CustomerService {
         return CustomerMapper.toCustomer(customer);
     }
 
+    /**
+     * Saves a new customer to the database.
+     *
+     * @param customer The Customer object to be saved.
+     * @return The saved Customer object.
+     * @throws IllegalRequestException If the 'customer' object is null.
+     */
     @Override
     @Transactional
     public Customer saveCustomer(Customer customer) {
@@ -56,6 +76,15 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.save(customer);
     }
 
+    /**
+     * Updates an existing customer in the database.
+     *
+     * @param id       The unique identifier of the customer.
+     * @param customer The updated Customer object.
+     * @return The updated Customer object.
+     * @throws ObjectWithIdNotFound    If a customer with the specified ID is not found.
+     * @throws IllegalRequestException If the 'customer' object is null or any of its fields are null.
+     */
     @Override
     @Transactional
     public Customer updateCustomer(long id, Customer customer) {
@@ -86,6 +115,13 @@ public class CustomerServiceImpl implements CustomerService {
         return updatedCustomer;
     }
 
+    /**
+     * Deletes a customer from the database by their unique identifier.
+     *
+     * @param id The unique identifier of the customer.
+     * @return True if the customer is successfully deleted, otherwise false.
+     * @throws ObjectWithIdNotFound If a customer with the specified ID is not found.
+     */
     @Override
     @Transactional
     public boolean deleteCustomer(long id) {
@@ -98,6 +134,14 @@ public class CustomerServiceImpl implements CustomerService {
         return true;
     }
 
+    /**
+     * Deletes a customer from the database by their unique identifier.
+     * This method is a duplicate of the deleteCustomer method and serves as an example of how to handle duplicate method names.
+     *
+     * @param id The unique identifier of the customer.
+     * @return True if the customer is successfully deleted, otherwise false.
+     * @throws ObjectWithIdNotFound If a customer with the specified ID is not found.
+     */
     @Transactional
     public boolean deleteCustomers(long id) {
         var customerOptional = customerRepository.findById(id);

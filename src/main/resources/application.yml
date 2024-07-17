@@ -1,15 +1,13 @@
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "prometheus,health,info,metrics"
-
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/marketplace_api
     username: ${POSTGRES_USERNAME}
     password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
   jpa:
     properties:
@@ -26,15 +24,28 @@ spring:
     baseline-on-migrate: true
     enabled: true
     baseline-description: "init"
-    baseline-version: 0  # Different baseline version to avoid conflict
-    outOfOrder: true
-    ignoreMigrationPatterns: "*:ignored"  # Use ':' instead of '=' for key-value pairs
+    baseline-version: 0
+    out-of-order: true
+    ignore-migration-patterns: "*:ignored"
 
-
-    hikari:
-      connectionTimeout: 20000
-      maximumPoolSize: 5
+  hikari:
+    connectionTimeout: 20000
+    maximumPoolSize: 5
 
 server:
   port: 8081
 
+# SpringDoc OpenAPI settings
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "prometheus,health,info,metrics"
