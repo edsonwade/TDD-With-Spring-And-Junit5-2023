@@ -1,4 +1,4 @@
-# 🛒 MarketplaceAPI 
+# 🛒 Marketplace API 
 
 ## Description
 MarketplaceAPI is a Spring Boot-based e-commerce backend application that allows you to manage products, customers, orders, and order items.
